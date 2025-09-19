@@ -171,13 +171,15 @@
         class="mx-auto max-w-md p-8 card rounded-3xl text-center"
       >
         <div class="mb-3">
-          <img src="logo.png" alt="AyurSutra Logo" class="w-48 mx-auto" />
+          <!-- Make logo smaller -->
+          <img src="logo.png" alt="AyurSutra Logo" class="w-32 mx-auto" />
         </div>
         <div class="my-6">
+          <!-- Make home2.png bigger -->
           <img
             src="home2.png"
             alt="Holistic wellness illustration"
-            class="w-80 mx-auto"
+            class="w-96 h-auto mx-auto"
           />
         </div>
         <p class="text-text-secondary mb-8">
@@ -501,7 +503,7 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 1014 0z"
                     ></path>
                   </svg>
                 </button>
@@ -1155,7 +1157,7 @@
           feedbackSubmitted: "আপনার মতামতের জন্য ধন্যবাদ!",
           educationHub: "আয়ুর্বেদ জ্ঞান কেন্দ্র",
           // Practitioner Dashboard
-          practitionerDashboardTitle: "চিকিৎসক ড্যাশবোর্ড",
+          practitionerDashboardTitle: "চিকিত্সক ড্যাশবোর্ড",
           patients: "রোগী",
           searchPatientsPlaceholder: "রোগী খুঁজুন...",
           todaysAppointments: "আজকের অ্যাপয়েন্টমেন্ট",
@@ -1954,7 +1956,7 @@
         modal.className =
           "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
         modal.innerHTML = `<div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-lg">
-                <h4 class="font-bold text-2xl" data-translate="clinicsNearYou">${t(
+                <h4 class="font-bold text-2xl mb-4" data-translate="clinicsNearYou">${t(
                   "clinicsNearYou"
                 )}</h4>
                 <div class="mt-6">
@@ -2070,9 +2072,6 @@
         document.getElementById("modal-root").appendChild(modal);
         const inner = modal.querySelector("div.relative");
         gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
-        modal
-          .querySelector("#modal-cancel")
-          .addEventListener("click", () => modal.remove());
         let selectedDateTime = null;
         modal.querySelectorAll(".slot-btn").forEach((b) => {
           b.addEventListener("click", () => {
