@@ -304,6 +304,18 @@
                 <div class="flex items-center justify-between mb-4">
                   <h3
                     class="text-xl font-bold tracking-tight"
+                    data-translate="currentTherapies"
+                  >
+                    Current Therapies
+                  </h3>
+                </div>
+                <div id="current-therapies-list" class="space-y-4"></div>
+              </div>
+
+              <div class="card p-6 rounded-3xl">
+                <div class="flex items-center justify-between mb-4">
+                  <h3
+                    class="text-xl font-bold tracking-tight"
                     data-translate="upcomingSessions"
                   >
                     Upcoming Sessions
@@ -449,6 +461,20 @@
             conditions: ["Vata imbalance", "Insomnia"],
             wellness: [65, 68, 70, 72, 74],
             appointments: [],
+            currentTherapies: [
+              {
+                name: "Shirodhara Routine",
+                totalDays: 7,
+                daysCompleted: 4,
+                practitioner: "Dr. Meera Gupta",
+              },
+              {
+                name: "Herbal Supplements",
+                totalDays: 30,
+                daysCompleted: 12,
+                practitioner: "Dr. Suresh Patel",
+              },
+            ],
             history: [
               {
                 date: "2025-08-15",
@@ -687,6 +713,8 @@
           issuePlaceholder:
             "e.g., 'I have been experiencing frequent headaches and shoulder stiffness.'",
           findSpecialist: "Find a Specialist",
+          currentTherapies: "Current Therapies",
+          noActiveTherapies: "No active therapies.",
           upcomingSessions: "Upcoming Sessions",
           wellnessProgress: "Wellness Progress",
           therapies: "Therapies",
@@ -742,6 +770,8 @@
           issuePlaceholder:
             "उदा., 'मुझे बार-बार सिरदर्द और कंधे में अकड़न हो रही है।'",
           findSpecialist: "एक विशेषज्ञ खोजें",
+          currentTherapies: "वर्तमान चिकित्साएं",
+          noActiveTherapies: "कोई सक्रिय चिकित्सा नहीं।",
           upcomingSessions: "आगामी सत्र",
           wellnessProgress: "कल्याण प्रगति",
           therapies: "चिकित्साएं",
@@ -797,6 +827,8 @@
           issuePlaceholder:
             "যেমন, 'আমি ঘন ঘন মাথাব্যথা এবং কাঁধে শক্তভাব অনুভব করছি।'",
           findSpecialist: "বিশেষজ্ঞ খুঁজুন",
+          currentTherapies: "বর্তমান থেরাপি",
+          noActiveTherapies: "কোনো সক্রিয় থেরাপি নেই।",
           upcomingSessions: "আসন্ন সেশন",
           wellnessProgress: "সুস্থতার অগ্রগতি",
           therapies: "থেরাপি",
@@ -1079,6 +1111,7 @@
         const dpat = $("#dashboard-patient");
         if (dpat) dpat.classList.remove("hidden");
         populatePatientInfo(patientId);
+        renderCurrentTherapies(patientId);
         renderUpcomingSession(patientId);
         renderWellnessChart(patientId);
         renderDoctorResults([]);
@@ -1108,6 +1141,48 @@
           .filter((a) => new Date(a.datetime) > new Date("2025-09-19T18:00:00"))
           .sort((a, b) => new Date(a.datetime) - new Date(b.datetime))[0];
         $("#patient-next").textContent = next ? formatDate(next.datetime) : "—";
+      }
+
+      function renderCurrentTherapies(pid) {
+        const patient = state.patients.find((p) => p.id === pid);
+        const container = $("#current-therapies-list");
+        if (!container) return;
+
+        if (
+          !patient ||
+          !patient.currentTherapies ||
+          patient.currentTherapies.length === 0
+        ) {
+          container.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 text-center text-sm text-text-secondary">${t(
+            "noActiveTherapies"
+          )}</div>`;
+          return;
+        }
+
+        container.innerHTML = patient.currentTherapies
+          .map((therapy) => {
+            const progressPercentage =
+              (therapy.daysCompleted / therapy.totalDays) * 100;
+            return `
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <span class="font-semibold text-text-primary">${
+                      therapy.name
+                    }</span>
+                    <span class="text-xs font-medium text-text-secondary">Day ${
+                      therapy.daysCompleted
+                    } of ${therapy.totalDays}</span>
+                </div>
+                <div class="w-full bg-gray-200/70 rounded-full h-2.5">
+                    <div class="bg-primary h-2.5 rounded-full" style="width: ${progressPercentage}%"></div>
+                </div>
+                <div class="text-xs text-text-secondary mt-1">with ${
+                  therapy.practitioner
+                }</div>
+            </div>
+        `;
+          })
+          .join("");
       }
 
       function renderUpcomingSession(pid) {
@@ -1752,3 +1827,4 @@
     </script>
   </body>
 </html>
+
