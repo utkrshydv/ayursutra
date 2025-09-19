@@ -24,6 +24,14 @@
               background: "#FCFBF9", // Clean, warm off-white
               "text-primary": "#2c3e50", // Dark charcoal for readability
               "text-secondary": "#576c7a", // Softer grey-blue
+              // Dark theme colors for consistency
+              'd-primary': '#319795',
+              'd-secondary': '#dd6b20',
+              'd-accent': '#4fd1c5',
+              'd-background': '#1a202c',
+              'd-surface': '#2d3748',
+              'd-text-primary': '#ffffff',
+              'd-text-secondary': '#a0aec0',
             },
           },
         },
@@ -1414,7 +1422,7 @@
           });
         } else {
           $("#upcoming-session-meta").textContent = t("noUpcomingSessions");
-          el.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 dark:border-slate-700 text-center text-sm text-text-secondary">${t(
+          el.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 dark:border-slate-600 text-center text-sm text-text-secondary">${t(
             "noSessionsMessage"
           )}</div>`;
         }
@@ -1626,7 +1634,7 @@
           "Therapeutic emesis, a controlled process to eliminate toxins (kapha dosha) from the upper part of the body, primarily the stomach and chest."
         )}</p></div>`;
         document.getElementById("modal-root").appendChild(modal);
-        const inner = modal.querySelector("div.bg-background");
+        const inner = modal.querySelector("div.relative");
         gsap.fromTo(
           inner,
           { scale: 0.9, opacity: 0 },
@@ -2187,7 +2195,7 @@
           "close"
         )}</button></div></div>`;
         document.getElementById("modal-root").appendChild(modal);
-        const inner = modal.querySelector(".bg-background");
+        const inner = modal.querySelector("div.relative");
         gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
         modal.querySelector("#modal-close").addEventListener("click", () =>
           gsap.to(inner, {
@@ -2202,5 +2210,3 @@
     </script>
   </body>
 </html>
-
-
