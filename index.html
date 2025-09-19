@@ -230,6 +230,13 @@
           </div>
           <div class="flex items-center gap-4">
             <button
+              id="btn-learn"
+              class="btn btn-primary px-5 py-2 rounded-full focus-ring font-semibold hidden"
+              data-translate="learn"
+            >
+              Learn
+            </button>
+            <button
               id="btn-find-clinics"
               class="btn btn-secondary px-5 py-2 rounded-full focus-ring font-semibold hidden"
               data-translate="findClinics"
@@ -495,21 +502,21 @@
               ></div>
             </div>
 
-            <div class="lg:col-span-3 card p-6 rounded-3xl">
-              <div class="flex items-center justify-between mb-4">
-                <h3
-                  class="text-xl font-bold tracking-tight"
-                  id="calendar-title"
-                >
-                  Today's Appointments
-                </h3>
-                <div class="text-sm text-text-secondary" id="calendar-date">
-                  --
+             <div class="lg:col-span-3 card p-6 rounded-3xl">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-4">
+                        <h3 class="text-xl font-bold tracking-tight" id="calendar-title"></h3>
+                        <div class="flex items-center gap-1">
+                            <button id="cal-prev" class="p-1 rounded-md hover:bg-gray-200/50 dark:hover:bg-slate-600">&lt;</button>
+                            <button id="cal-next" class="p-1 rounded-md hover:bg-gray-200/50 dark:hover:bg-slate-600">&gt;</button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div id="calendar-list" class="space-y-3"></div>
+                <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-sm">
+                    <!-- Calendar will be rendered here by JS -->
+                </div>
             </div>
-             <!-- New Feedback Section -->
+
             <div class="lg:col-span-4 card p-6 rounded-3xl">
                 <h3 class="text-xl font-bold mb-4 tracking-tight" data-translate="recentFeedback">Recent Feedback</h3>
                 <div id="pract-feedback-list" class="space-y-4 max-h-[40vh] overflow-auto">
@@ -554,6 +561,7 @@
       const state = {
         currentUser: null,
         currentLanguage: "en",
+        currentCalendarDate: new Date("2025-09-21T09:00:00"),
         feedback: [
            {
             patientId: "P-001",
@@ -866,6 +874,33 @@
             status: "Completed",
             mode: "Online",
           },
+          {
+            id: "A-104",
+            patientId: "P-001",
+            doctorId: "D-01",
+            datetime: "2025-09-25T11:00",
+            therapy: "Detox Consult",
+            status: "Scheduled",
+            mode: "Physical",
+          },
+          {
+            id: "A-105",
+            patientId: "P-003",
+            doctorId: "D-02",
+            datetime: "2025-09-22T11:00",
+            therapy: "Virechana Follow-up",
+            status: "Scheduled",
+            mode: "Online",
+          },
+           {
+            id: "A-106",
+            patientId: "P-002",
+            doctorId: "D-03",
+            datetime: "2025-09-29T16:00",
+            therapy: "Pain Management",
+            status: "Scheduled",
+            mode: "Physical",
+          }
         ],
       };
 
@@ -885,6 +920,7 @@
           details: "Details",
           schedule: "Schedule",
           searching: "Searching…",
+          learn: "Learn",
           // Patient Dashboard
           patientDashboardTitle: "Patient Dashboard",
           age: "Age",
@@ -929,6 +965,8 @@
           yourComments: "Your Comments",
           feedbackPlaceholder: "Share details of your experience...",
           feedbackSubmitted: "Thank you for your feedback!",
+          educationHub: "Ayurveda Knowledge Hub",
+
 
           // Practitioner Dashboard
           practitionerDashboardTitle: "Practitioner Dashboard",
@@ -958,6 +996,7 @@
           details: "विवरण",
           schedule: "अनुसूची",
           searching: "खोज रहा है…",
+          learn: "सीखें",
           // Patient Dashboard
           patientDashboardTitle: "रोगी डैशबोर्ड",
           age: "आयु",
@@ -1002,6 +1041,7 @@
           yourComments: "आपकी टिप्पणियाँ",
           feedbackPlaceholder: "अपने अनुभव का विवरण साझा करें...",
           feedbackSubmitted: "आपकी प्रतिक्रिया के लिए धन्यवाद!",
+          educationHub: "आयुर्वेद ज्ञान केंद्र",
           // Practitioner Dashboard
           practitionerDashboardTitle: "चिकित्सक डैशबोर्ड",
           patients: "मरीजों",
@@ -1030,6 +1070,7 @@
           details: "বিস্তারিত",
           schedule: "নির্ধারণ করুন",
           searching: "অনুসন্ধান চলছে…",
+          learn: "শিখুন",
           // Patient Dashboard
           patientDashboardTitle: "রোগী ড্যাশবোর্ড",
           age: "বয়স",
@@ -1074,6 +1115,7 @@
           yourComments: "আপনার মন্তব্য",
           feedbackPlaceholder: "আপনার অভিজ্ঞতার বিবরণ শেয়ার করুন...",
           feedbackSubmitted: "আপনার মতামতের জন্য ধন্যবাদ!",
+          educationHub: "আয়ুর্বেদ জ্ঞান কেন্দ্র",
           // Practitioner Dashboard
           practitionerDashboardTitle: "চিকিৎসক ড্যাশবোর্ড",
           patients: "রোগী",
@@ -1219,7 +1261,7 @@
             renderUpcomingSession(state.currentUser.id);
           } else if (state.currentUser?.type === "practitioner") {
             $("#app-title").textContent = t("practitionerDashboardTitle");
-            renderCalendar(state.currentUser.id);
+            renderCalendar(state.currentUser.id, state.currentCalendarDate);
           }
         }
       }
@@ -1270,6 +1312,20 @@
         const btnFindClinics = $("#btn-find-clinics");
         if (btnFindClinics)
           btnFindClinics.addEventListener("click", openClinicsModal);
+
+        const btnLearn = $("#btn-learn");
+        if(btnLearn) btnLearn.addEventListener("click", openEducationModal);
+
+        $('#cal-prev').addEventListener('click', () => {
+            state.currentCalendarDate.setMonth(state.currentCalendarDate.getMonth() - 1);
+            renderCalendar(state.currentUser.id, state.currentCalendarDate);
+        });
+
+        $('#cal-next').addEventListener('click', () => {
+            state.currentCalendarDate.setMonth(state.currentCalendarDate.getMonth() + 1);
+            renderCalendar(state.currentUser.id, state.currentCalendarDate);
+        });
+
 
         document.querySelectorAll(".lang-btn").forEach((btn) => {
           btn.addEventListener("click", (e) => {
@@ -1368,6 +1424,8 @@
             if (dr) dr.classList.add("hidden");
             if ($("#btn-find-clinics"))
               $("#btn-find-clinics").classList.add("hidden");
+            if ($("#btn-learn"))
+              $("#btn-learn").classList.add("hidden");
             state.currentUser = null;
           },
         });
@@ -1387,6 +1445,8 @@
         renderDoctorResults([]);
         if ($("#btn-find-clinics"))
           $("#btn-find-clinics").classList.remove("hidden");
+         if ($("#btn-learn"))
+              $("#btn-learn").classList.remove("hidden");
         applyTranslations();
         gsap.from("#dashboard-patient .card", {
           y: 20,
@@ -2195,14 +2255,106 @@
         URL.revokeObjectURL(url);
         toast(t("downloadStarted"));
       }
+
+    function openEducationModal() {
+        const modal = document.createElement("div");
+        modal.className = "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
+        modal.innerHTML = `
+            <div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-4xl max-h-[90vh] flex gap-6">
+                <div id="edu-nav" class="w-1/4 space-y-2">
+                    <h4 class="font-bold text-2xl mb-4" data-translate="educationHub">${t("educationHub")}</h4>
+                    <button class="edu-nav-item active w-full text-left p-3 rounded-lg">Understanding Doshas</button>
+                     <button class="edu-nav-item w-full text-left p-3 rounded-lg">Panchakarma Therapies</button>
+                    <button class="edu-nav-item w-full text-left p-3 rounded-lg">Ayurvedic Recipes</button>
+                </div>
+                <div id="edu-content" class="w-3/4 overflow-auto">
+                </div>
+                 <button id="edu-close" class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white">✕</button>
+            </div>`;
+        document.getElementById("modal-root").appendChild(modal);
+
+        const inner = modal.querySelector("div.relative");
+        gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
+        
+        const contentEl = modal.querySelector('#edu-content');
+        const navItems = modal.querySelectorAll('.edu-nav-item');
+
+        const articles = {
+            "Understanding Doshas": `
+                <h5 class="text-2xl font-bold mb-4">The Three Doshas: Vata, Pitta, and Kapha</h5>
+                <p class="mb-4">In Ayurveda, the three doshas are energies that make up every individual. While everyone has some of each, most people tend to have a dominance of one or two. The doshas are: </p>
+                <ul class="list-disc list-inside space-y-2 mb-4">
+                    <li><strong>Vata (Air and Ether):</strong> Characterized by qualities of being light, cold, dry, and mobile. Vata governs movement in the body, the activities of the nervous system, and the process of elimination.</li>
+                    <li><strong>Pitta (Fire and Water):</strong> Characterized by being hot, sharp, and oily. Pitta governs digestion, absorption, assimilation, metabolism, and body temperature.</li>
+                    <li><strong>Kapha (Earth and Water):</strong> Characterized by being heavy, slow, steady, and cool. Kapha governs the structure of the body. It is the principle that holds the cells together and forms the muscle, fat, bone, and sinew.</li>
+                </ul>
+                <p>Understanding your dominant dosha can help you make lifestyle and diet choices that support balance and health.</p>`,
+            "Panchakarma Therapies": `
+                <h5 class="text-2xl font-bold mb-4">An Introduction to Panchakarma</h5>
+                <p class="mb-4">Panchakarma is a method of cleansing the body of all unwanted waste out of the body. It's a cornerstone of Ayurvedic medicine and consists of five main procedures:</p>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>Vamana:</strong> Therapeutic vomiting or emesis.</li>
+                    <li><strong>Virechana:</strong> Purgation.</li>
+                    <li><strong>Basti:</strong> Medicated enema.</li>
+                    <li><strong>Nasya:</strong> Nasal administration of medicine.</li>
+                    <li><strong>Raktamokshana:</strong> Bloodletting or detoxification of the blood.</li>
+                </ul>`,
+            "Ayurvedic Recipes": `
+                 <h5 class="text-2xl font-bold mb-4">Simple Kitchari Recipe</h5>
+                <p class="mb-4">Kitchari is a simple, nourishing porridge that is easy to digest and is a staple in Ayurvedic cleansing.</p>
+                <p class="font-semibold">Ingredients:</p>
+                <ul class="list-disc list-inside space-y-1 mb-4">
+                    <li>1 cup yellow mung dal</li>
+                    <li>1/2 cup basmati rice</li>
+                    <li>6 cups water</li>
+                    <li>1 tbsp ghee</li>
+                    <li>1 tsp cumin seeds</li>
+                    <li>1 tsp mustard seeds</li>
+                    <li>1/2 tsp turmeric powder</li>
+                    <li>Fresh ginger, grated (to taste)</li>
+                    <li>Salt to taste</li>
+                </ul>
+                <p class="font-semibold">Instructions:</p>
+                <p>Wash dal and rice together until water runs clear. Heat ghee in a pot, add seeds until they pop. Add ginger and turmeric. Stir in rice and dal, then add water and salt. Bring to a boil, then simmer until tender (about 45 minutes).</p>
+            `
+        };
+        
+        function loadContent(topic) {
+            contentEl.innerHTML = articles[topic];
+            navItems.forEach(item => {
+                item.classList.toggle('active', item.textContent === topic);
+                item.classList.toggle('bg-primary/10', item.textContent === topic);
+                item.classList.toggle('dark:bg-d-primary/10', item.textContent === topic);
+            });
+        }
+        
+        navItems.forEach(item => {
+            item.addEventListener('click', () => loadContent(item.textContent));
+        });
+
+        loadContent("Understanding Doshas"); // Load default content
+        
+        modal.querySelector('#edu-close').addEventListener('click', () => {
+             gsap.to(inner, {
+                y: 20,
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => modal.remove(),
+            });
+        });
+    }
+
+
       function showPractitionerDashboard(practId) {
         $("#app-title").textContent = t("practitionerDashboardTitle");
         $("#dashboard-patient").classList.add("hidden");
         $("#dashboard-practitioner").classList.remove("hidden");
         if ($("#btn-find-clinics"))
           $("#btn-find-clinics").classList.add("hidden");
+         if ($("#btn-learn"))
+              $("#btn-learn").classList.add("hidden");
         renderPractPatientList();
-        renderCalendar(practId);
+        renderCalendar(practId, state.currentCalendarDate);
         renderRecentFeedback(practId);
         applyTranslations();
         gsap.from("#dashboard-practitioner .card", {
@@ -2271,57 +2423,55 @@
           list.appendChild(el);
         });
       }
-      function renderCalendar(practId) {
-        const today = new Date("2025-09-21T09:00:00");
-        $("#calendar-title").textContent = t("todaysAppointments");
-        $("#calendar-date").textContent = today.toLocaleDateString("en-IN", {
-          dateStyle: "long",
+      function renderCalendar(practId, date) {
+        const grid = $('#calendar-grid');
+        const title = $('#calendar-title');
+        grid.innerHTML = '';
+        
+        const month = date.getMonth();
+        const year = date.getFullYear();
+        
+        title.textContent = date.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Day headers
+        ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
+            grid.innerHTML += `<div class="font-bold text-text-secondary">${day}</div>`;
         });
-        const list = $("#calendar-list");
-        if (!list) return;
-        list.innerHTML = "";
-        const todays = state.appointments
-          .filter((a) => {
-            const apptDate = new Date(a.datetime);
-            return (
-              a.doctorId === practId &&
-              apptDate.getDate() === today.getDate() &&
-              apptDate.getMonth() === today.getMonth() &&
-              apptDate.getFullYear() === today.getFullYear()
-            );
-          })
-          .sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
-        if (todays.length === 0) {
-          list.innerHTML = `<div class="text-center text-text-secondary py-6">${t(
-            "noAppointments"
-          )}</div>`;
-          return;
+
+        // Blank days
+        for(let i=0; i<firstDay; i++) {
+            grid.innerHTML += '<div></div>';
         }
-        todays.forEach((a) => {
-          const p = state.patients.find((x) => x.id === a.patientId);
-          const el = document.createElement("div");
-          el.className = `p-4 rounded-xl border border-gray-200/50 dark:border-slate-700 flex items-center justify-between ${
-            a.status === "Completed"
-              ? "bg-gray-50/50 dark:bg-slate-800/50 opacity-60"
-              : ""
-          }`;
-          el.innerHTML = `<div><div class="font-semibold text-text-primary">${new Date(
-            a.datetime
-          ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} — ${
-            p ? p.name : a.patientId
-          }</div><div class="text-sm text-text-secondary">${a.therapy} • ${
-            a.status
-          }</div></div><div><button class="ap-view px-3 py-1 rounded-md bg-secondary/20 dark:bg-orange-400/20 font-semibold" data-id="${
-            a.id
-          }">${t("details")}</button></div>`;
-          list.appendChild(el);
+
+        // Dates
+        for(let i=1; i<=daysInMonth; i++) {
+             const today = new Date();
+             const isToday = i === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+             const dayAppointments = state.appointments.filter(a => {
+                 const apptDate = new Date(a.datetime);
+                 return a.doctorId === practId && apptDate.getDate() === i && apptDate.getMonth() === month && apptDate.getFullYear() === year;
+             });
+
+            grid.innerHTML += `
+                <div class="p-1 border-t border-gray-200/50 dark:border-slate-700/50 min-h-[80px]">
+                    <div class="font-semibold ${isToday ? 'bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center mx-auto' : ''}">${i}</div>
+                     <div class="text-xs mt-1 space-y-1">
+                        ${dayAppointments.map(a => `<button data-appid="${a.id}" class="cal-appointment-btn w-full text-left bg-secondary/20 hover:bg-secondary/40 dark:bg-d-secondary/20 dark:hover:bg-d-secondary/40 p-1 rounded-md truncate" title="${a.therapy} with ${state.patients.find(p => p.id === a.patientId)?.name || ''}">${a.therapy}</button>`).join('')}
+                    </div>
+                </div>`;
+        }
+
+        grid.querySelectorAll('.cal-appointment-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const appId = e.currentTarget.dataset.appid;
+                openAppointmentDetail(appId);
+            });
         });
-        $all(".ap-view").forEach((b) =>
-          b.addEventListener("click", (e) =>
-            openAppointmentDetail(e.target.dataset.id)
-          )
-        );
       }
+
       function openAppointmentDetail(aid) {
         const appt = state.appointments.find((a) => a.id === aid);
         if (!appt) return;
@@ -2388,7 +2538,7 @@
             const a = state.appointments.find((ap) => ap.id === appt.id);
             if (a) a.status = "Completed";
             toast(t("markedCompleted"));
-            renderCalendar(state.currentUser.id);
+            renderCalendar(state.currentUser.id, state.currentCalendarDate);
             openPractSlide(pid, a);
           });
         }
@@ -2429,4 +2579,5 @@
     </script>
   </body>
 </html>
+
 
