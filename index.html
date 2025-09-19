@@ -25,13 +25,13 @@
               "text-primary": "#2c3e50", // Dark charcoal for readability
               "text-secondary": "#576c7a", // Softer grey-blue
               // Dark theme colors for consistency
-              'd-primary': '#319795',
-              'd-secondary': '#dd6b20',
-              'd-accent': '#4fd1c5',
-              'd-background': '#1a202c',
-              'd-surface': '#2d3748',
-              'd-text-primary': '#ffffff',
-              'd-text-secondary': '#a0aec0',
+              "d-primary": "#319795",
+              "d-secondary": "#dd6b20",
+              "d-accent": "#4fd1c5",
+              "d-background": "#1a202c",
+              "d-surface": "#2d3748",
+              "d-text-primary": "#ffffff",
+              "d-text-secondary": "#a0aec0",
             },
           },
         },
@@ -171,11 +171,15 @@
         class="mx-auto max-w-md p-8 card rounded-3xl text-center"
       >
         <div class="mb-3">
-          <img src="logo.png" alt="AyurSutra Logo" class="w-60 h-50 mx-auto" />
+          <img src="logo.png" alt="AyurSutra Logo" class="w-48 mx-auto" />
         </div>
-        <h1 class="text-4xl font-bold text-text-primary mb-2 tracking-tight">
-          Welcome to AyurSutra
-        </h1>
+        <div class="my-6">
+          <img
+            src="home2.png"
+            alt="Holistic wellness illustration"
+            class="w-80 mx-auto"
+          />
+        </div>
         <p class="text-text-secondary mb-8">
           Your journey to holistic wellness starts here.
         </p>
@@ -508,26 +512,50 @@
               ></div>
             </div>
 
-             <div class="lg:col-span-3 card p-6 rounded-3xl">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-4">
-                        <h3 class="text-xl font-bold tracking-tight" id="calendar-title"></h3>
-                        <div class="flex items-center gap-1">
-                            <button id="cal-prev" class="p-1 rounded-md hover:bg-gray-200/50 dark:hover:bg-slate-600">&lt;</button>
-                            <button id="cal-next" class="p-1 rounded-md hover:bg-gray-200/50 dark:hover:bg-slate-600">&gt;</button>
-                        </div>
-                    </div>
+            <div class="lg:col-span-3 card p-6 rounded-3xl">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-4">
+                  <h3
+                    class="text-xl font-bold tracking-tight"
+                    id="calendar-title"
+                  ></h3>
+                  <div class="flex items-center gap-1">
+                    <button
+                      id="cal-prev"
+                      class="p-1 rounded-md hover:bg-gray-200/50 dark:hover:bg-slate-600"
+                    >
+                      &lt;
+                    </button>
+                    <button
+                      id="cal-next"
+                      class="p-1 rounded-md hover:bg-gray-200/50 dark:hover:bg-slate-600"
+                    >
+                      &gt;
+                    </button>
+                  </div>
                 </div>
-                <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-sm">
-                    <!-- Calendar will be rendered here by JS -->
-                </div>
+              </div>
+              <div
+                id="calendar-grid"
+                class="grid grid-cols-7 gap-1 text-center text-sm"
+              >
+                <!-- Calendar will be rendered here by JS -->
+              </div>
             </div>
 
             <div class="lg:col-span-4 card p-6 rounded-3xl">
-                <h3 class="text-xl font-bold mb-4 tracking-tight" data-translate="recentFeedback">Recent Feedback</h3>
-                <div id="pract-feedback-list" class="space-y-4 max-h-[40vh] overflow-auto">
-                    <!-- JS will render feedback here -->
-                </div>
+              <h3
+                class="text-xl font-bold mb-4 tracking-tight"
+                data-translate="recentFeedback"
+              >
+                Recent Feedback
+              </h3>
+              <div
+                id="pract-feedback-list"
+                class="space-y-4 max-h-[40vh] overflow-auto"
+              >
+                <!-- JS will render feedback here -->
+              </div>
             </div>
           </div>
 
@@ -569,46 +597,51 @@
         currentLanguage: "en",
         currentCalendarDate: new Date("2025-09-21T09:00:00"),
         feedback: [
-           {
+          {
             patientId: "P-001",
             practitionerName: "Dr. Suresh Patel",
             therapy: "Abhyanga",
             date: "2025-06-10",
             rating: 5,
-            comment: "Dr. Patel is very knowledgeable. The Abhyanga therapy was very rejuvenating. I felt a significant reduction in my Vata imbalance symptoms."
-           },
-           {
+            comment:
+              "Dr. Patel is very knowledgeable. The Abhyanga therapy was very rejuvenating. I felt a significant reduction in my Vata imbalance symptoms.",
+          },
+          {
             patientId: "P-003",
             practitionerName: "Dr. Priya Nair",
             therapy: "Virechana",
             date: "2025-04-22",
             rating: 4,
-            comment: "The Virechana treatment helped with my skin allergies. Dr. Nair provided a very detailed diet plan which was very helpful. The process itself was a bit challenging but worth it."
-           },
-           {
+            comment:
+              "The Virechana treatment helped with my skin allergies. Dr. Nair provided a very detailed diet plan which was very helpful. The process itself was a bit challenging but worth it.",
+          },
+          {
             patientId: "P-005",
             practitionerName: "Dr. Meera Gupta",
             therapy: "Nasya",
             date: "2025-07-18",
             rating: 5,
-            comment: "My migraines have significantly reduced after the Nasya therapy. Dr. Gupta was very gentle and caring throughout the session. Highly recommended."
-           },
-           {
+            comment:
+              "My migraines have significantly reduced after the Nasya therapy. Dr. Gupta was very gentle and caring throughout the session. Highly recommended.",
+          },
+          {
             patientId: "P-002",
             practitionerName: "Dr. Amit Desai",
             therapy: "Kati Basti",
             date: "2025-08-20",
             rating: 5,
-            comment: "The Kati Basti therapy was incredibly effective for my back pain. Dr. Desai was very professional and explained the process clearly. Feeling much better now."
-           },
-           {
+            comment:
+              "The Kati Basti therapy was incredibly effective for my back pain. Dr. Desai was very professional and explained the process clearly. Feeling much better now.",
+          },
+          {
             patientId: "P-004",
             practitionerName: "Dr. Meera Gupta",
             therapy: "Shirodhara",
             date: "2025-08-10",
             rating: 4,
-            comment: "Very relaxing session. It helped with my stress levels, but the effects didn't last as long as I had hoped. The clinic environment was very peaceful."
-           }
+            comment:
+              "Very relaxing session. It helped with my stress levels, but the effects didn't last as long as I had hoped. The clinic environment was very peaceful.",
+          },
         ],
         patients: [
           {
@@ -898,7 +931,7 @@
             status: "Scheduled",
             mode: "Online",
           },
-           {
+          {
             id: "A-106",
             patientId: "P-002",
             doctorId: "D-03",
@@ -906,7 +939,7 @@
             therapy: "Pain Management",
             status: "Scheduled",
             mode: "Physical",
-          }
+          },
         ],
       };
 
@@ -972,7 +1005,6 @@
           feedbackPlaceholder: "Share details of your experience...",
           feedbackSubmitted: "Thank you for your feedback!",
           educationHub: "Ayurveda Knowledge Hub",
-
 
           // Practitioner Dashboard
           practitionerDashboardTitle: "Practitioner Dashboard",
@@ -1136,76 +1168,78 @@
           recentFeedback: "সাম্প্রতিক মতামত",
         },
         or: {
-            // Login
-            welcome: "ଆୟୁସୂତ୍ରକୁ ସ୍ଵାଗତ",
-            subtitle: "ସାମଗ୍ରିକ ସୁସ୍ଥତା ପାଇଁ ଆପଣଙ୍କ ଯାତ୍ରା ଏଠାରୁ ଆରମ୍ଭ ହୁଏ।",
-            patientLogin: "ରୋଗୀ ଲଗଇନ୍",
-            practitionerLogin: "ଚିକିତ୍ସକ ଲଗଇନ୍",
-            // General
-            dashboard: "ଡ୍ୟାସବୋର୍ଡ",
-            logout: "ଲଗଆଉଟ୍",
-            history: "ଇତିହାସ",
-            edit: "ସମ୍ପାଦନ କରନ୍ତୁ",
-            close: "ବନ୍ଦ କରନ୍ତୁ",
-            details: "ବିବରଣୀ",
-            schedule: "ସମୟ-ସାରଣୀ",
-            searching: "ଖୋଜା ଚାଲିଛି...",
-            learn: "ଶିଖନ୍ତୁ",
-            // Patient Dashboard
-            patientDashboardTitle: "ରୋଗୀ ଡ୍ୟାସବୋର୍ଡ",
-            age: "ବୟସ",
-            gender: "ଲିଙ୍ଗ",
-            contact: "ସମ୍ପର୍କ",
-            nextAppointment: "ପରବର୍ତ୍ତୀ ଆପଏଣ୍ଟମେଣ୍ଟ",
-            conditions: "ଅବସ୍ଥା",
-            assistantTitle: "ଆୟୁସୂତ୍ର ସହାୟକ",
-            issuePlaceholder: "ଉଦାହରଣ, 'ମୋର ବାରମ୍ବାର ମୁଣ୍ଡବିନ୍ଧା ଏବଂ କାନ୍ଧରେ କଠିନତା ଅନୁଭବ ହେଉଛି।'",
-            findSpecialist: "ଏକ ବିଶେଷଜ୍ଞ ଖୋଜନ୍ତୁ",
-            findClinics: "ମୋ ଆଖପାଖର କ୍ଲିନିକ୍",
-            enterPincode: "ଆପଣଙ୍କ ୬-ଅଙ୍କ ବିଶିଷ୍ଟ ପିନକୋଡ୍ ଦିଅନ୍ତୁ",
-            search: "ଖୋଜନ୍ତୁ",
-            clinicsNearYou: "ଆପଣଙ୍କ ନିକଟରେ ଥିବା କ୍ଲିନିକ୍",
-            noClinicsFound: "ଏହି ପିନକୋଡ୍ ପାଇଁ କୌଣସି କ୍ଲିନିକ୍ ମିଳିଲା ନାହିଁ। ନିକଟବର୍ତ୍ତୀ ସ୍ଥାନ ଚେଷ୍ଟା କରନ୍ତୁ।",
-            currentTherapies: "ବର୍ତ୍ତମାନର ଚିକିତ୍ସା",
-            noActiveTherapies: "କୌଣସି ସକ୍ରିୟ ଚିକିତ୍ସା ନାହିଁ।",
-            upcomingSessions: "ଆଗାମୀ ସେସନ୍",
-            wellnessProgress: "ସ୍ୱାସ୍ଥ୍ୟ ପ୍ରଗତି",
-            therapies: "ଚିକିତ୍ସା",
-            noUpcomingSessions: "କୌଣସି ଆଗାମୀ ସେସନ୍ ନାହିଁ",
-            noSessionsMessage: "ଆପଣଙ୍କର କୌଣସି ନିର୍ଧାରିତ ସେସନ୍ ନାହିଁ।",
-            suggestionsFound: "ପରାମର୍ଶ ମିଳିଲା।",
-            describeIssue: "ଦୟାକରି ପଠାଇବା ପୂର୍ବରୁ ଆପଣଙ୍କ ସମସ୍ୟା ବର୍ଣ୍ଣନା କରନ୍ତୁ।",
-            upcomingSessionCount: "{count} ଆଗାମୀ ସେସନ୍",
-            appointmentDetails: "ଆପଏଣ୍ଟମେଣ୍ଟ ବିବରଣୀ",
-            scheduleWith: "{name} ଙ୍କ ସହିତ ସମୟ-ସାରଣୀ",
-            selectSlot: "୧. ଏକ ଉପଲବ୍ଧ ସମୟ ସ୍ଲଟ୍ ବାଛନ୍ତୁ:",
-            selectMode: "୨. ପରାମର୍ଶ ମୋଡ୍ ବାଛନ୍ତୁ:",
-            confirmPhysical: "ଶାରୀରିକ ଉପସ୍ଥିତି ନିଶ୍ଚିତ କରନ୍ତୁ",
-            confirmOnline: "ଅନଲାଇନ୍ ନିଶ୍ଚିତ କରନ୍ତୁ",
-            appointmentScheduled: "ଆପଏଣ୍ଟମେଣ୍ଟ ସଫଳତାର ସହିତ ନିର୍ଧାରିତ ହୋଇଛି!",
-            noHistory: "କୌଣସି ପୂର୍ବ ଚିକିତ୍ସା ରେକର୍ଡ ହୋଇନାହିଁ।",
-            downloadStarted: "ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ ଆରମ୍ଭ ହୋଇଛି।",
-            giveFeedback: "ମତାମତ ଦିଅନ୍ତୁ",
-            feedbackSent: "ମତାମତ ପଠାଯାଇଛି",
-            submitFeedback: "ମତାମତ ଦାଖଲ କରନ୍ତୁ",
-            giveFeedbackFor: "ପାଇଁ ମତାମତ ଦିଅନ୍ତୁ",
-            yourRating: "ଆପଣଙ୍କ ରେଟିଂ",
-            yourComments: "ଆପଣଙ୍କ ମନ୍ତବ୍ୟ",
-            feedbackPlaceholder: "ଆପଣଙ୍କ ଅନୁଭୂତିର ବିବରଣୀ ଦିଅନ୍ତୁ...",
-            feedbackSubmitted: "ଆପଣଙ୍କ ମତାମତ ପାଇଁ ଧନ୍ୟବାଦ!",
-            educationHub: "ଆୟୁର୍ବେଦ ଜ୍ଞାନ କେନ୍ଦ୍ର",
-            // Practitioner Dashboard
-            practitionerDashboardTitle: "ଚିକିତ୍ସକ ଡ୍ୟାସବୋର୍ଡ",
-            patients: "ରୋଗୀମାନେ",
-            searchPatientsPlaceholder: "ରୋଗୀ ଖୋଜନ୍ତୁ...",
-            todaysAppointments: "ଆଜିର ଆପଏଣ୍ଟମେଣ୍ଟ",
-            patientDetails: "ରୋଗୀ ବିବରଣୀ",
-            noAppointments: "ଏହି ଦିନ ପାଇଁ କୌଣସି ଆପଏଣ୍ଟମେଣ୍ଟ ନିର୍ଧାରିତ ହୋଇନାହିଁ।",
-            selectedAppointment: "ଚୟନିତ ଆପଏଣ୍ଟମେଣ୍ଟ",
-            markCompleted: "ସମ୍ପୂର୍ଣ୍ଣ ଭାବରେ ଚିହ୍ନିତ କରନ୍ତୁ",
-            addNote: "ନୋଟ୍ ଯୋଗ କରନ୍ତୁ",
-            markedCompleted: "ସମ୍ପୂର୍ଣ୍ଣ ଭାବରେ ଚିହ୍ନିତ ହୋଇଛି",
-            recentFeedback: "ନିକଟବର୍ତ୍ତୀ ମତାମତ",
+          // Login
+          welcome: "ଆୟୁସୂତ୍ରକୁ ସ୍ଵାଗତ",
+          subtitle: "ସାମଗ୍ରିକ ସୁସ୍ଥତା ପାଇଁ ଆପଣଙ୍କ ଯାତ୍ରା ଏଠାରୁ ଆରମ୍ଭ ହୁଏ।",
+          patientLogin: "ରୋଗୀ ଲଗଇନ୍",
+          practitionerLogin: "ଚିକିତ୍ସକ ଲଗଇନ୍",
+          // General
+          dashboard: "ଡ୍ୟାସବୋର୍ଡ",
+          logout: "ଲଗଆଉଟ୍",
+          history: "ଇତିହାସ",
+          edit: "ସମ୍ପାଦନ କରନ୍ତୁ",
+          close: "ବନ୍ଦ କରନ୍ତୁ",
+          details: "ବିବରଣୀ",
+          schedule: "ସମୟ-ସାରଣୀ",
+          searching: "ଖୋଜା ଚାଲିଛି...",
+          learn: "ଶିଖନ୍ତୁ",
+          // Patient Dashboard
+          patientDashboardTitle: "ରୋଗୀ ଡ୍ୟାସବୋର୍ଡ",
+          age: "ବୟସ",
+          gender: "ଲିଙ୍ଗ",
+          contact: "ସମ୍ପର୍କ",
+          nextAppointment: "ପରବର୍ତ୍ତୀ ଆପଏଣ୍ଟମେଣ୍ଟ",
+          conditions: "ଅବସ୍ଥା",
+          assistantTitle: "ଆୟୁସୂତ୍ର ସହାୟକ",
+          issuePlaceholder:
+            "ଉଦାହରଣ, 'ମୋର ବାରମ୍ବାର ମୁଣ୍ଡବିନ୍ଧା ଏବଂ କାନ୍ଧରେ କଠିନତା ଅନୁଭବ ହେଉଛି।'",
+          findSpecialist: "ଏକ ବିଶେଷଜ୍ଞ ଖୋଜନ୍ତୁ",
+          findClinics: "ମୋ ଆଖପାଖର କ୍ଲିନିକ୍",
+          enterPincode: "ଆପଣଙ୍କ ୬-ଅଙ୍କ ବିଶିଷ୍ଟ ପିନକୋଡ୍ ଦିଅନ୍ତୁ",
+          search: "ଖୋଜନ୍ତୁ",
+          clinicsNearYou: "ଆପଣଙ୍କ ନିକଟରେ ଥିବା କ୍ଲିନିକ୍",
+          noClinicsFound:
+            "ଏହି ପିନକୋଡ୍ ପାଇଁ କୌଣସି କ୍ଲିନିକ୍ ମିଳିଲା ନାହିଁ। ନିକଟବର୍ତ୍ତୀ ସ୍ଥାନ ଚେଷ୍ଟା କରନ୍ତୁ।",
+          currentTherapies: "ବର୍ତ୍ତମାନର ଚିକିତ୍ସା",
+          noActiveTherapies: "କୌଣସି ସକ୍ରିୟ ଚିକିତ୍ସା ନାହିଁ।",
+          upcomingSessions: "ଆଗାମୀ ସେସନ୍",
+          wellnessProgress: "ସ୍ୱାସ୍ଥ୍ୟ ପ୍ରଗତି",
+          therapies: "ଚିକିତ୍ସା",
+          noUpcomingSessions: "କୌଣସି ଆଗାମୀ ସେସନ୍ ନାହିଁ",
+          noSessionsMessage: "ଆପଣଙ୍କର କୌଣସି ନିର୍ଧାରିତ ସେସନ୍ ନାହିଁ।",
+          suggestionsFound: "ପରାମର୍ଶ ମିଳିଲା।",
+          describeIssue: "ଦୟାକରି ପଠାଇବା ପୂର୍ବରୁ ଆପଣଙ୍କ ସମସ୍ୟା ବର୍ଣ୍ଣନା କରନ୍ତୁ।",
+          upcomingSessionCount: "{count} ଆଗାମୀ ସେସନ୍",
+          appointmentDetails: "ଆପଏଣ୍ଟମେଣ୍ଟ ବିବରଣୀ",
+          scheduleWith: "{name} ଙ୍କ ସହିତ ସମୟ-ସାରଣୀ",
+          selectSlot: "୧. ଏକ ଉପଲବ୍ଧ ସମୟ ସ୍ଲଟ୍ ବାଛନ୍ତୁ:",
+          selectMode: "୨. ପରାମର୍ଶ ମୋଡ୍ ବାଛନ୍ତୁ:",
+          confirmPhysical: "ଶାରୀରିକ ଉପସ୍ଥିତି ନିଶ୍ଚିତ କରନ୍ତୁ",
+          confirmOnline: "ଅନଲାଇନ୍ ନିଶ୍ଚିତ କରନ୍ତୁ",
+          appointmentScheduled: "ଆପଏଣ୍ଟମେଣ୍ଟ ସଫଳତାର ସହିତ ନିର୍ଧାରିତ ହୋଇଛି!",
+          noHistory: "କୌଣସି ପୂର୍ବ ଚିକିତ୍ସା ରେକର୍ଡ ହୋଇନାହିଁ।",
+          downloadStarted: "ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ ଆରମ୍ଭ ହୋଇଛି।",
+          giveFeedback: "ମତାମତ ଦିଅନ୍ତୁ",
+          feedbackSent: "ମତାମତ ପଠାଯାଇଛି",
+          submitFeedback: "ମତାମତ ଦାଖଲ କରନ୍ତୁ",
+          giveFeedbackFor: "ପାଇଁ ମତାମତ ଦିଅନ୍ତୁ",
+          yourRating: "ଆପଣଙ୍କ ରେଟିଂ",
+          yourComments: "ଆପଣଙ୍କ ମନ୍ତବ୍ୟ",
+          feedbackPlaceholder: "ଆପଣଙ୍କ ଅନୁଭୂତିର ବିବରଣୀ ଦିଅନ୍ତୁ...",
+          feedbackSubmitted: "ଆପଣଙ୍କ ମତାମତ ପାଇଁ ଧନ୍ୟବାଦ!",
+          educationHub: "ଆୟୁର୍ବେଦ ଜ୍ଞାନ କେନ୍ଦ୍ର",
+          // Practitioner Dashboard
+          practitionerDashboardTitle: "ଚିକିତ୍ସକ ଡ୍ୟାସବୋର୍ଡ",
+          patients: "ରୋଗୀମାନେ",
+          searchPatientsPlaceholder: "ରୋଗୀ ଖୋଜନ୍ତୁ...",
+          todaysAppointments: "ଆଜିର ଆପଏଣ୍ଟମେଣ୍ଟ",
+          patientDetails: "ରୋଗୀ ବିବରଣୀ",
+          noAppointments: "ଏହି ଦିନ ପାଇଁ କୌଣସି ଆପଏଣ୍ଟମେଣ୍ଟ ନିର୍ଧାରିତ ହୋଇନାହିଁ।",
+          selectedAppointment: "ଚୟନିତ ଆପଏଣ୍ଟମେଣ୍ଟ",
+          markCompleted: "ସମ୍ପୂର୍ଣ୍ଣ ଭାବରେ ଚିହ୍ନିତ କରନ୍ତୁ",
+          addNote: "ନୋଟ୍ ଯୋଗ କରନ୍ତୁ",
+          markedCompleted: "ସମ୍ପୂର୍ଣ୍ଣ ଭାବରେ ଚିହ୍ନିତ ହୋଇଛି",
+          recentFeedback: "ନିକଟବର୍ତ୍ତୀ ମତାମତ",
         },
       };
 
@@ -1348,10 +1382,18 @@
         state.currentLanguage = lang;
 
         // Update login screen text
-        $("#screen-login h1").textContent = t("welcome");
-        $("#screen-login p:nth-of-type(1)").textContent = t("subtitle");
-        $("#btn-patient-login").textContent = t("patientLogin");
-        $("#btn-practitioner-login").textContent = t("practitionerLogin");
+        const subtitleEl = $("#screen-login p");
+        if (subtitleEl) {
+          subtitleEl.textContent = t("subtitle");
+        }
+        const patientLoginBtn = $("#btn-patient-login");
+        if (patientLoginBtn) {
+          patientLoginBtn.textContent = t("patientLogin");
+        }
+        const practitionerLoginBtn = $("#btn-practitioner-login");
+        if (practitionerLoginBtn) {
+          practitionerLoginBtn.textContent = t("practitionerLogin");
+        }
 
         document.querySelectorAll(".lang-btn").forEach((btn) => {
           btn.classList.toggle("active", btn.dataset.lang === lang);
@@ -1392,18 +1434,21 @@
           btnFindClinics.addEventListener("click", openClinicsModal);
 
         const btnLearn = $("#btn-learn");
-        if(btnLearn) btnLearn.addEventListener("click", openEducationModal);
+        if (btnLearn) btnLearn.addEventListener("click", openEducationModal);
 
-        $('#cal-prev').addEventListener('click', () => {
-            state.currentCalendarDate.setMonth(state.currentCalendarDate.getMonth() - 1);
-            renderCalendar(state.currentUser.id, state.currentCalendarDate);
+        $("#cal-prev").addEventListener("click", () => {
+          state.currentCalendarDate.setMonth(
+            state.currentCalendarDate.getMonth() - 1
+          );
+          renderCalendar(state.currentUser.id, state.currentCalendarDate);
         });
 
-        $('#cal-next').addEventListener('click', () => {
-            state.currentCalendarDate.setMonth(state.currentCalendarDate.getMonth() + 1);
-            renderCalendar(state.currentUser.id, state.currentCalendarDate);
+        $("#cal-next").addEventListener("click", () => {
+          state.currentCalendarDate.setMonth(
+            state.currentCalendarDate.getMonth() + 1
+          );
+          renderCalendar(state.currentUser.id, state.currentCalendarDate);
         });
-
 
         document.querySelectorAll(".lang-btn").forEach((btn) => {
           btn.addEventListener("click", (e) => {
@@ -1502,8 +1547,7 @@
             if (dr) dr.classList.add("hidden");
             if ($("#btn-find-clinics"))
               $("#btn-find-clinics").classList.add("hidden");
-            if ($("#btn-learn"))
-              $("#btn-learn").classList.add("hidden");
+            if ($("#btn-learn")) $("#btn-learn").classList.add("hidden");
             state.currentUser = null;
           },
         });
@@ -1523,8 +1567,7 @@
         renderDoctorResults([]);
         if ($("#btn-find-clinics"))
           $("#btn-find-clinics").classList.remove("hidden");
-         if ($("#btn-learn"))
-              $("#btn-learn").classList.remove("hidden");
+        if ($("#btn-learn")) $("#btn-learn").classList.remove("hidden");
         applyTranslations();
         gsap.from("#dashboard-patient .card", {
           y: 20,
@@ -1576,19 +1619,13 @@
             return `
             <div>
                 <div class="flex justify-between items-center mb-1">
-                    <span class="font-semibold text-text-primary">${
-                      therapy.name
-                    }</span>
-                    <span class="text-xs font-medium text-text-secondary">Day ${
-                      therapy.daysCompleted
-                    } of ${therapy.totalDays}</span>
+                    <span class="font-semibold text-text-primary">${therapy.name}</span>
+                    <span class="text-xs font-medium text-text-secondary">Day ${therapy.daysCompleted} of ${therapy.totalDays}</span>
                 </div>
                 <div class="w-full bg-gray-200/70 dark:bg-slate-700 rounded-full h-2.5">
                     <div class="bg-primary dark:bg-d-primary h-2.5 rounded-full" style="width: ${progressPercentage}%"></div>
                 </div>
-                <div class="text-xs text-text-secondary mt-1">with ${
-                  therapy.practitioner
-                }</div>
+                <div class="text-xs text-text-secondary mt-1">with ${therapy.practitioner}</div>
             </div>
         `;
           })
@@ -1983,17 +2020,11 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="font-semibold text-text-primary">${c.name}</p>
-                        <p class="text-xs text-text-secondary">${
-                          c.address
-                        }, ${c.pincode}</p>
+                        <p class="text-xs text-text-secondary">${c.address}, ${c.pincode}</p>
                     </div>
                     <div class="text-right flex-shrink-0 pl-4">
-                        <p class="font-bold text-primary dark:text-d-primary">${
-                          c.distance
-                        }</p>
-                        <p class="text-xs font-semibold text-text-secondary">★ ${
-                          c.rating
-                        }</p>
+                        <p class="font-bold text-primary dark:text-d-primary">${c.distance}</p>
+                        <p class="text-xs font-semibold text-text-secondary">★ ${c.rating}</p>
                     </div>
                 </div>
             </div>
@@ -2115,9 +2146,11 @@
         const inner = modal.querySelector("div.relative");
         gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
 
-        modal.querySelector("#confirm-pay-btn").addEventListener("click", () => {
-          confirmSchedule(pid, did, datetime, mode, modal);
-        });
+        modal
+          .querySelector("#confirm-pay-btn")
+          .addEventListener("click", () => {
+            confirmSchedule(pid, did, datetime, mode, modal);
+          });
 
         modal
           .querySelector("#payment-cancel-btn")
@@ -2183,32 +2216,41 @@
             "noHistory"
           )}</div>`;
         else {
-           const sortedHistory = p.history.sort((a, b) => new Date(b.date) - new Date(a.date));
-           sortedHistory.forEach((h, idx) => {
-              const row = document.createElement("div");
-              row.className =
-                "p-4 rounded-xl border border-gray-200/80 dark:border-slate-700";
-              const feedbackExists = state.feedback.some(f =>
+          const sortedHistory = p.history.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          sortedHistory.forEach((h, idx) => {
+            const row = document.createElement("div");
+            row.className =
+              "p-4 rounded-xl border border-gray-200/80 dark:border-slate-700";
+            const feedbackExists = state.feedback.some(
+              (f) =>
                 f.patientId === p.id &&
                 f.practitionerName === h.practitioner &&
                 f.date === h.date
-              );
-              row.innerHTML = `<div class="flex items-start justify-between"><div><div class="font-semibold text-text-primary">${
-                h.therapy
-              }</div><div class="text-xs text-text-secondary">${new Date(
-                h.date
-              ).toLocaleDateString("en-IN", { dateStyle: "long" })} • ${
-                h.practitioner
-              }</div></div>
+            );
+            row.innerHTML = `<div class="flex items-start justify-between"><div><div class="font-semibold text-text-primary">${
+              h.therapy
+            }</div><div class="text-xs text-text-secondary">${new Date(
+              h.date
+            ).toLocaleDateString("en-IN", { dateStyle: "long" })} • ${
+              h.practitioner
+            }</div></div>
               <div class="flex items-center gap-2">
                 <button class="download-pres text-sm px-3 py-1 rounded-md bg-secondary/20 dark:bg-orange-400/20 font-semibold" data-idx="${idx}">Prescription</button>
-                <button class="feedback-btn text-sm px-3 py-1 rounded-md ${feedbackExists ? 'bg-gray-200/50 text-gray-500 cursor-not-allowed' : 'bg-primary/20 dark:bg-d-primary/20 font-semibold'}" data-idx="${idx}" ${feedbackExists ? 'disabled' : ''}>${feedbackExists ? t('feedbackSent') : t('giveFeedback')}</button>
+                <button class="feedback-btn text-sm px-3 py-1 rounded-md ${
+                  feedbackExists
+                    ? "bg-gray-200/50 text-gray-500 cursor-not-allowed"
+                    : "bg-primary/20 dark:bg-d-primary/20 font-semibold"
+                }" data-idx="${idx}" ${feedbackExists ? "disabled" : ""}>${
+              feedbackExists ? t("feedbackSent") : t("giveFeedback")
+            }</button>
               </div>
               </div><p class="text-sm text-text-secondary mt-2">${
                 h.prescription
               }</p>`;
-              listEl.appendChild(row);
-            });
+            listEl.appendChild(row);
+          });
         }
         modal
           .querySelector("#history-close")
@@ -2216,39 +2258,53 @@
         modal.querySelectorAll(".download-pres").forEach((b) =>
           b.addEventListener("click", (e) => {
             const idx = e.target.dataset.idx;
-            const h = p.history.sort((a, b) => new Date(b.date) - new Date(a.date))[idx];
+            const h = p.history.sort(
+              (a, b) => new Date(b.date) - new Date(a.date)
+            )[idx];
             downloadPrescription(
               h.prescription,
               `${p.id}_${h.therapy}_prescription.txt`
             );
           })
         );
-        modal.querySelectorAll(".feedback-btn:not([disabled])").forEach(b => {
-             b.addEventListener("click", (e) => {
-                const idx = e.target.dataset.idx;
-                const historyItem = p.history.sort((a, b) => new Date(b.date) - new Date(a.date))[idx];
-                modal.remove(); // Close the history modal
-                openFeedbackModal(p.id, historyItem);
-            })
+        modal.querySelectorAll(".feedback-btn:not([disabled])").forEach((b) => {
+          b.addEventListener("click", (e) => {
+            const idx = e.target.dataset.idx;
+            const historyItem = p.history.sort(
+              (a, b) => new Date(b.date) - new Date(a.date)
+            )[idx];
+            modal.remove(); // Close the history modal
+            openFeedbackModal(p.id, historyItem);
+          });
         });
 
         const inner = modal.querySelector("div.relative");
         gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
       }
 
-    function openFeedbackModal(patientId, historyItem) {
+      function openFeedbackModal(patientId, historyItem) {
         const modal = document.createElement("div");
-        modal.className = "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
+        modal.className =
+          "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
         modal.innerHTML = `
             <div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-lg">
-                <h4 class="font-bold text-2xl" data-translate="giveFeedbackFor">${t("giveFeedbackFor")}</h4>
+                <h4 class="font-bold text-2xl" data-translate="giveFeedbackFor">${t(
+                  "giveFeedbackFor"
+                )}</h4>
                 <div class="mt-2 p-3 bg-background/50 dark:bg-slate-800/50 rounded-lg border border-gray-200/50 dark:border-slate-700">
                     <p class="font-semibold">${historyItem.therapy}</p>
-                    <p class="text-sm text-text-secondary">with ${historyItem.practitioner} on ${new Date(historyItem.date).toLocaleDateString("en-IN", { dateStyle: "long" })}</p>
+                    <p class="text-sm text-text-secondary">with ${
+                      historyItem.practitioner
+                    } on ${new Date(historyItem.date).toLocaleDateString(
+          "en-IN",
+          { dateStyle: "long" }
+        )}</p>
                 </div>
 
                 <div class="mt-6">
-                    <p class="text-sm font-semibold mb-2 text-text-primary" data-translate="yourRating">${t("yourRating")}</p>
+                    <p class="text-sm font-semibold mb-2 text-text-primary" data-translate="yourRating">${t(
+                      "yourRating"
+                    )}</p>
                     <div id="feedback-rating" class="flex items-center gap-2 text-3xl cursor-pointer">
                         <span data-value="1" class="star text-gray-300 dark:text-gray-600">★</span>
                         <span data-value="2" class="star text-gray-300 dark:text-gray-600">★</span>
@@ -2259,67 +2315,83 @@
                 </div>
 
                 <div class="mt-6">
-                    <p class="text-sm font-semibold mb-2 text-text-primary" data-translate="yourComments">${t("yourComments")}</p>
-                    <textarea id="feedback-comment" rows="4" class="w-full p-3 rounded-lg border-gray-200/50 dark:border-slate-600 bg-background/50 dark:bg-slate-800/50 focus-ring" placeholder="${t('feedbackPlaceholder')}"></textarea>
+                    <p class="text-sm font-semibold mb-2 text-text-primary" data-translate="yourComments">${t(
+                      "yourComments"
+                    )}</p>
+                    <textarea id="feedback-comment" rows="4" class="w-full p-3 rounded-lg border-gray-200/50 dark:border-slate-600 bg-background/50 dark:bg-slate-800/50 focus-ring" placeholder="${t(
+                      "feedbackPlaceholder"
+                    )}"></textarea>
                 </div>
 
                 <div class="mt-6 flex justify-end gap-2">
-                    <button id="feedback-cancel" class="px-5 py-2 rounded-lg hover:bg-gray-200/50 dark:hover:bg-slate-700 font-semibold">${t("close")}</button>
-                    <button id="feedback-submit" class="px-5 py-2 rounded-lg btn btn-primary font-semibold" data-translate="submitFeedback">${t("submitFeedback")}</button>
+                    <button id="feedback-cancel" class="px-5 py-2 rounded-lg hover:bg-gray-200/50 dark:hover:bg-slate-700 font-semibold">${t(
+                      "close"
+                    )}</button>
+                    <button id="feedback-submit" class="px-5 py-2 rounded-lg btn btn-primary font-semibold" data-translate="submitFeedback">${t(
+                      "submitFeedback"
+                    )}</button>
                 </div>
             </div>
         `;
-        document.getElementById('modal-root').appendChild(modal);
+        document.getElementById("modal-root").appendChild(modal);
 
         const inner = modal.querySelector("div.relative");
         gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
 
         let currentRating = 0;
-        const stars = modal.querySelectorAll('.star');
+        const stars = modal.querySelectorAll(".star");
 
         const setRating = (rating) => {
-            currentRating = rating;
-            stars.forEach(star => {
-                if (parseInt(star.dataset.value) <= rating) {
-                    star.classList.add('text-amber-400');
-                    star.classList.remove('text-gray-300', 'dark:text-gray-600');
-                } else {
-                    star.classList.remove('text-amber-400');
-                    star.classList.add('text-gray-300', 'dark:text-gray-600');
-                }
-            });
+          currentRating = rating;
+          stars.forEach((star) => {
+            if (parseInt(star.dataset.value) <= rating) {
+              star.classList.add("text-amber-400");
+              star.classList.remove("text-gray-300", "dark:text-gray-600");
+            } else {
+              star.classList.remove("text-amber-400");
+              star.classList.add("text-gray-300", "dark:text-gray-600");
+            }
+          });
         };
 
-        stars.forEach(star => {
-            star.addEventListener('click', () => setRating(parseInt(star.dataset.value)));
+        stars.forEach((star) => {
+          star.addEventListener("click", () =>
+            setRating(parseInt(star.dataset.value))
+          );
         });
 
-        modal.querySelector('#feedback-cancel').addEventListener('click', () => modal.remove());
-        modal.querySelector('#feedback-submit').addEventListener('click', () => {
-            const comment = modal.querySelector('#feedback-comment').value.trim();
+        modal
+          .querySelector("#feedback-cancel")
+          .addEventListener("click", () => modal.remove());
+        modal
+          .querySelector("#feedback-submit")
+          .addEventListener("click", () => {
+            const comment = modal
+              .querySelector("#feedback-comment")
+              .value.trim();
             if (currentRating === 0) {
-                toast("Please provide a rating.");
-                return;
+              toast("Please provide a rating.");
+              return;
             }
             if (comment === "") {
-                toast("Please provide a comment.");
-                return;
+              toast("Please provide a comment.");
+              return;
             }
 
             const newFeedback = {
-                patientId,
-                practitionerName: historyItem.practitioner,
-                therapy: historyItem.therapy,
-                date: historyItem.date,
-                rating: currentRating,
-                comment,
+              patientId,
+              practitionerName: historyItem.practitioner,
+              therapy: historyItem.therapy,
+              date: historyItem.date,
+              rating: currentRating,
+              comment,
             };
 
             state.feedback.push(newFeedback);
             modal.remove();
             toast(t("feedbackSubmitted"));
-        });
-    }
+          });
+      }
 
       function downloadPrescription(text, filename) {
         const blob = new Blob([text], { type: "text/plain" });
@@ -2334,13 +2406,16 @@
         toast(t("downloadStarted"));
       }
 
-    function openEducationModal() {
+      function openEducationModal() {
         const modal = document.createElement("div");
-        modal.className = "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
+        modal.className =
+          "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
         modal.innerHTML = `
             <div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-4xl max-h-[90vh] flex gap-6">
                 <div id="edu-nav" class="w-1/4 space-y-2">
-                    <h4 class="font-bold text-2xl mb-4" data-translate="educationHub">${t("educationHub")}</h4>
+                    <h4 class="font-bold text-2xl mb-4" data-translate="educationHub">${t(
+                      "educationHub"
+                    )}</h4>
                     <button class="edu-nav-item active w-full text-left p-3 rounded-lg">Understanding Doshas</button>
                      <button class="edu-nav-item w-full text-left p-3 rounded-lg">Panchakarma Therapies</button>
                     <button class="edu-nav-item w-full text-left p-3 rounded-lg">Ayurvedic Recipes</button>
@@ -2353,12 +2428,12 @@
 
         const inner = modal.querySelector("div.relative");
         gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
-        
-        const contentEl = modal.querySelector('#edu-content');
-        const navItems = modal.querySelectorAll('.edu-nav-item');
+
+        const contentEl = modal.querySelector("#edu-content");
+        const navItems = modal.querySelectorAll(".edu-nav-item");
 
         const articles = {
-            "Understanding Doshas": `
+          "Understanding Doshas": `
                 <h5 class="text-2xl font-bold mb-4">The Three Doshas: Vata, Pitta, and Kapha</h5>
                 <p class="mb-4">In Ayurveda, the three doshas are energies that make up every individual. While everyone has some of each, most people tend to have a dominance of one or two. The doshas are: </p>
                 <ul class="list-disc list-inside space-y-2 mb-4">
@@ -2367,7 +2442,7 @@
                     <li><strong>Kapha (Earth and Water):</strong> Characterized by being heavy, slow, steady, and cool. Kapha governs the structure of the body. It is the principle that holds the cells together and forms the muscle, fat, bone, and sinew.</li>
                 </ul>
                 <p>Understanding your dominant dosha can help you make lifestyle and diet choices that support balance and health.</p>`,
-            "Panchakarma Therapies": `
+          "Panchakarma Therapies": `
                 <h5 class="text-2xl font-bold mb-4">An Introduction to Panchakarma</h5>
                 <p class="mb-4">Panchakarma is a method of cleansing the body of all unwanted waste out of the body. It's a cornerstone of Ayurvedic medicine and consists of five main procedures:</p>
                 <ul class="list-disc list-inside space-y-2">
@@ -2377,7 +2452,7 @@
                     <li><strong>Nasya:</strong> Nasal administration of medicine.</li>
                     <li><strong>Raktamokshana:</strong> Bloodletting or detoxification of the blood.</li>
                 </ul>`,
-            "Ayurvedic Recipes": `
+          "Ayurvedic Recipes": `
                  <h5 class="text-2xl font-bold mb-4">Simple Kitchari Recipe</h5>
                 <p class="mb-4">Kitchari is a simple, nourishing porridge that is easy to digest and is a staple in Ayurvedic cleansing.</p>
                 <p class="font-semibold">Ingredients:</p>
@@ -2394,34 +2469,36 @@
                 </ul>
                 <p class="font-semibold">Instructions:</p>
                 <p>Wash dal and rice together until water runs clear. Heat ghee in a pot, add seeds until they pop. Add ginger and turmeric. Stir in rice and dal, then add water and salt. Bring to a boil, then simmer until tender (about 45 minutes).</p>
-            `
+            `,
         };
-        
+
         function loadContent(topic) {
-            contentEl.innerHTML = articles[topic];
-            navItems.forEach(item => {
-                item.classList.toggle('active', item.textContent === topic);
-                item.classList.toggle('bg-primary/10', item.textContent === topic);
-                item.classList.toggle('dark:bg-d-primary/10', item.textContent === topic);
-            });
+          contentEl.innerHTML = articles[topic];
+          navItems.forEach((item) => {
+            item.classList.toggle("active", item.textContent === topic);
+            item.classList.toggle("bg-primary/10", item.textContent === topic);
+            item.classList.toggle(
+              "dark:bg-d-primary/10",
+              item.textContent === topic
+            );
+          });
         }
-        
-        navItems.forEach(item => {
-            item.addEventListener('click', () => loadContent(item.textContent));
+
+        navItems.forEach((item) => {
+          item.addEventListener("click", () => loadContent(item.textContent));
         });
 
         loadContent("Understanding Doshas"); // Load default content
-        
-        modal.querySelector('#edu-close').addEventListener('click', () => {
-             gsap.to(inner, {
-                y: 20,
-                opacity: 0,
-                duration: 0.2,
-                onComplete: () => modal.remove(),
-            });
-        });
-    }
 
+        modal.querySelector("#edu-close").addEventListener("click", () => {
+          gsap.to(inner, {
+            y: 20,
+            opacity: 0,
+            duration: 0.2,
+            onComplete: () => modal.remove(),
+          });
+        });
+      }
 
       function showPractitionerDashboard(practId) {
         $("#app-title").textContent = t("practitionerDashboardTitle");
@@ -2429,8 +2506,7 @@
         $("#dashboard-practitioner").classList.remove("hidden");
         if ($("#btn-find-clinics"))
           $("#btn-find-clinics").classList.add("hidden");
-         if ($("#btn-learn"))
-              $("#btn-learn").classList.add("hidden");
+        if ($("#btn-learn")) $("#btn-learn").classList.add("hidden");
         renderPractPatientList();
         renderCalendar(practId, state.currentCalendarDate);
         renderRecentFeedback(practId);
@@ -2444,38 +2520,52 @@
       }
 
       function renderRecentFeedback(practId) {
-        const practitioner = state.practitioners.find(p => p.id === practId);
+        const practitioner = state.practitioners.find((p) => p.id === practId);
         if (!practitioner) return;
 
-        const listEl = $('#pract-feedback-list');
+        const listEl = $("#pract-feedback-list");
         if (!listEl) return;
-        listEl.innerHTML = '';
+        listEl.innerHTML = "";
 
         const feedbacks = state.feedback
-            .filter(f => f.practitionerName === practitioner.name)
-            .sort((a,b) => new Date(b.date) - new Date(a.date));
+          .filter((f) => f.practitionerName === practitioner.name)
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
 
         if (feedbacks.length === 0) {
-            listEl.innerHTML = `<div class="text-center text-text-secondary py-6">No feedback received yet.</div>`;
-            return;
+          listEl.innerHTML = `<div class="text-center text-text-secondary py-6">No feedback received yet.</div>`;
+          return;
         }
 
-        const feedbackHtml = feedbacks.map(f => {
-            const patient = state.patients.find(p => p.id === f.patientId);
-            const ratingStars = '★'.repeat(f.rating) + '☆'.repeat(5 - f.rating);
+        const feedbackHtml = feedbacks
+          .map((f) => {
+            const patient = state.patients.find((p) => p.id === f.patientId);
+            const ratingStars = "★".repeat(f.rating) + "☆".repeat(5 - f.rating);
             return `
                 <div class="p-4 rounded-xl border border-gray-200/80 dark:border-slate-700">
                     <div class="flex items-start justify-between">
                         <div>
-                            <p class="font-semibold text-text-primary">${patient ? patient.name : f.patientId} <span class="text-sm font-normal text-text-secondary">re: ${f.therapy}</span></p>
-                            <p class="text-xs text-text-secondary">${new Date(f.date).toLocaleDateString("en-IN", { dateStyle: "long" })}</p>
+                            <p class="font-semibold text-text-primary">${
+                              patient ? patient.name : f.patientId
+                            } <span class="text-sm font-normal text-text-secondary">re: ${
+              f.therapy
+            }</span></p>
+                            <p class="text-xs text-text-secondary">${new Date(
+                              f.date
+                            ).toLocaleDateString("en-IN", {
+                              dateStyle: "long",
+                            })}</p>
                         </div>
-                        <div class="text-amber-400 font-bold text-lg" title="Rating: ${f.rating}/5">${ratingStars}</div>
+                        <div class="text-amber-400 font-bold text-lg" title="Rating: ${
+                          f.rating
+                        }/5">${ratingStars}</div>
                     </div>
-                    <p class="text-sm text-text-secondary mt-2 italic">"${f.comment}"</p>
+                    <p class="text-sm text-text-secondary mt-2 italic">"${
+                      f.comment
+                    }"</p>
                 </div>
             `;
-        }).join('');
+          })
+          .join("");
         listEl.innerHTML = feedbackHtml;
       }
 
@@ -2502,51 +2592,78 @@
         });
       }
       function renderCalendar(practId, date) {
-        const grid = $('#calendar-grid');
-        const title = $('#calendar-title');
-        grid.innerHTML = '';
-        
+        const grid = $("#calendar-grid");
+        const title = $("#calendar-title");
+        grid.innerHTML = "";
+
         const month = date.getMonth();
         const year = date.getFullYear();
-        
-        title.textContent = date.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+
+        title.textContent = date.toLocaleDateString("en-IN", {
+          month: "long",
+          year: "numeric",
+        });
 
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
         // Day headers
-        ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
-            grid.innerHTML += `<div class="font-bold text-text-secondary">${day}</div>`;
+        ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach((day) => {
+          grid.innerHTML += `<div class="font-bold text-text-secondary">${day}</div>`;
         });
 
         // Blank days
-        for(let i=0; i<firstDay; i++) {
-            grid.innerHTML += '<div></div>';
+        for (let i = 0; i < firstDay; i++) {
+          grid.innerHTML += "<div></div>";
         }
 
         // Dates
-        for(let i=1; i<=daysInMonth; i++) {
-             const today = new Date();
-             const isToday = i === today.getDate() && month === today.getMonth() && year === today.getFullYear();
-             const dayAppointments = state.appointments.filter(a => {
-                 const apptDate = new Date(a.datetime);
-                 return a.doctorId === practId && apptDate.getDate() === i && apptDate.getMonth() === month && apptDate.getFullYear() === year;
-             });
+        for (let i = 1; i <= daysInMonth; i++) {
+          const today = new Date();
+          const isToday =
+            i === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear();
+          const dayAppointments = state.appointments.filter((a) => {
+            const apptDate = new Date(a.datetime);
+            return (
+              a.doctorId === practId &&
+              apptDate.getDate() === i &&
+              apptDate.getMonth() === month &&
+              apptDate.getFullYear() === year
+            );
+          });
 
-            grid.innerHTML += `
+          grid.innerHTML += `
                 <div class="p-1 border-t border-gray-200/50 dark:border-slate-700/50 min-h-[80px]">
-                    <div class="font-semibold ${isToday ? 'bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center mx-auto' : ''}">${i}</div>
+                    <div class="font-semibold ${
+                      isToday
+                        ? "bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center mx-auto"
+                        : ""
+                    }">${i}</div>
                      <div class="text-xs mt-1 space-y-1">
-                        ${dayAppointments.map(a => `<button data-appid="${a.id}" class="cal-appointment-btn w-full text-left bg-secondary/20 hover:bg-secondary/40 dark:bg-d-secondary/20 dark:hover:bg-d-secondary/40 p-1 rounded-md truncate" title="${a.therapy} with ${state.patients.find(p => p.id === a.patientId)?.name || ''}">${a.therapy}</button>`).join('')}
+                        ${dayAppointments
+                          .map(
+                            (a) =>
+                              `<button data-appid="${
+                                a.id
+                              }" class="cal-appointment-btn w-full text-left bg-secondary/20 hover:bg-secondary/40 dark:bg-d-secondary/20 dark:hover:bg-d-secondary/40 p-1 rounded-md truncate" title="${
+                                a.therapy
+                              } with ${
+                                state.patients.find((p) => p.id === a.patientId)
+                                  ?.name || ""
+                              }">${a.therapy}</button>`
+                          )
+                          .join("")}
                     </div>
                 </div>`;
         }
 
-        grid.querySelectorAll('.cal-appointment-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const appId = e.currentTarget.dataset.appid;
-                openAppointmentDetail(appId);
-            });
+        grid.querySelectorAll(".cal-appointment-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            const appId = e.currentTarget.dataset.appid;
+            openAppointmentDetail(appId);
+          });
         });
       }
 
@@ -2657,4 +2774,3 @@
     </script>
   </body>
 </html>
-
