@@ -13,6 +13,7 @@
     />
     <script>
       tailwind.config = {
+        darkMode: "class",
         theme: {
           extend: {
             colors: {
@@ -38,18 +39,40 @@
         font-family: "Poppins", ui-sans-serif, system-ui, -apple-system,
           "Segoe UI", Roboto, "Helvetica Neue", Arial;
         color: #2c3e50;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
+      .dark body {
+        background-color: #1a202c;
+        background-image: linear-gradient(170deg, #2d3748 0%, #1a202c 100%),
+          url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        color: #ffffff;
+      }
+
+      .dark .text-text-primary,
+      .dark .text-text-secondary {
+        color: #ffffff;
+      }
+
       .card {
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(16px);
         border: 1px solid rgba(0, 0, 0, 0.05);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02),
           0 5px 15px rgba(0, 0, 0, 0.06);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+      .dark .card {
+        background: rgba(45, 55, 72, 0.7);
+        border-color: rgba(255, 255, 255, 0.1);
       }
       .focus-ring:focus {
         outline: 2px solid #a0d2db;
         outline-offset: 2px;
       }
+      .dark .focus-ring:focus {
+        outline-color: #4fd1c5;
+      }
+
       .btn {
         transition: all 0.25s ease;
       }
@@ -57,20 +80,36 @@
         background-color: #368d8b;
         color: white;
       }
+      .dark .btn-primary {
+        background-color: #319795;
+      }
       .btn-primary:hover {
         background-color: #2a6f6d;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(54, 141, 139, 0.25);
       }
+      .dark .btn-primary:hover {
+        background-color: #2c7a7b;
+        box-shadow: 0 4px 12px rgba(49, 151, 149, 0.25);
+      }
+
       .btn-secondary {
         background-color: #ff7a5c;
         color: white;
+      }
+      .dark .btn-secondary {
+        background-color: #dd6b20;
       }
       .btn-secondary:hover {
         background-color: #e66a4f;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(255, 122, 92, 0.3);
       }
+      .dark .btn-secondary:hover {
+        background-color: #c05621;
+        box-shadow: 0 4px 12px rgba(221, 107, 32, 0.3);
+      }
+
       .therapy-card {
         position: relative;
         overflow: hidden;
@@ -96,13 +135,24 @@
         transition: all 0.2s ease;
         border: 1px solid transparent;
       }
+      .dark .lang-btn {
+        color: #a0aec0;
+      }
+
       .lang-btn.active {
         background-color: rgba(54, 141, 139, 0.1); /* primary/10 */
         color: #368d8b; /* primary */
         font-weight: 600;
       }
+      .dark .lang-btn.active {
+        background-color: rgba(49, 151, 149, 0.2);
+        color: #319795;
+      }
       .lang-btn:not(.active):hover {
         background-color: rgba(0, 0, 0, 0.05);
+      }
+      .dark .lang-btn:not(.active):hover {
+        background-color: rgba(255, 255, 255, 0.05);
       }
     </style>
   </head>
@@ -180,11 +230,38 @@
             </button>
             <div
               id="user-badge"
-              class="px-4 py-2 rounded-full bg-white/70 shadow-sm text-sm font-semibold"
+              class="px-4 py-2 rounded-full bg-white/70 dark:bg-slate-700/70 shadow-sm text-sm font-semibold"
             ></div>
             <button
+              id="theme-toggle"
+              class="p-2 rounded-full bg-white/70 dark:bg-slate-700/70 hover:bg-white/90 dark:hover:bg-slate-600/90"
+            >
+              <svg
+                id="theme-toggle-dark-icon"
+                class="hidden w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+                ></path>
+              </svg>
+              <svg
+                id="theme-toggle-light-icon"
+                class="hidden w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.707.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05a1 1 0 010-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707a1 1 0 01-1.414 0zM3 11a1 1 0 100-2H2a1 1 0 100 2h1z"
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+            <button
               id="btn-logout"
-              class="px-5 py-2 rounded-full bg-white/70 border border-gray-200/50 hover:bg-white focus-ring font-semibold"
+              class="px-5 py-2 rounded-full bg-white/70 dark:bg-slate-700/70 border border-gray-200/50 dark:border-slate-600 hover:bg-white dark:hover:bg-slate-600 focus-ring font-semibold"
             >
               Logout
             </button>
@@ -212,13 +289,13 @@
                 <div class="flex flex-col gap-2 items-end">
                   <button
                     id="history-btn"
-                    class="text-sm px-3 py-1 rounded-md bg-secondary/20 hover:bg-secondary/30"
+                    class="text-sm px-3 py-1 rounded-md bg-secondary/20 hover:bg-secondary/30 dark:bg-orange-400/20 dark:hover:bg-orange-400/30"
                   >
                     History
                   </button>
                   <button
                     id="edit-patient"
-                    class="text-sm px-3 py-1 rounded-md bg-secondary/20 hover:bg-secondary/30"
+                    class="text-sm px-3 py-1 rounded-md bg-secondary/20 hover:bg-secondary/30 dark:bg-orange-400/20 dark:hover:bg-orange-400/30"
                   >
                     Edit
                   </button>
@@ -281,7 +358,7 @@
                     rows="4"
                     data-translate-placeholder="issuePlaceholder"
                     placeholder="e.g., 'I have been experiencing frequent headaches and shoulder stiffness.'"
-                    class="w-full p-3 rounded-lg border-gray-200/50 bg-background/50 focus-ring"
+                    class="w-full p-3 rounded-lg border-gray-200/50 dark:border-slate-600 bg-background/50 dark:bg-slate-800/50 focus-ring"
                   ></textarea>
                 </div>
                 <div class="mt-4 flex items-center gap-4 flex-wrap">
@@ -381,13 +458,13 @@
               <div class="flex items-center gap-2 mb-4">
                 <input
                   id="pract-search"
-                  class="w-full px-3 py-2 border border-gray-200/50 bg-background/50 rounded-lg focus-ring"
+                  class="w-full px-3 py-2 border border-gray-200/50 dark:border-slate-600 bg-background/50 dark:bg-slate-800/50 rounded-lg focus-ring"
                   data-translate-placeholder="searchPatientsPlaceholder"
                   placeholder="Search patients..."
                 />
                 <button
                   id="pract-search-go"
-                  class="p-2 rounded-md bg-secondary/20 hover:bg-secondary/30"
+                  class="p-2 rounded-md bg-secondary/20 hover:bg-secondary/30 dark:bg-orange-400/20 dark:hover:bg-orange-400/30"
                 >
                   <svg
                     class="w-5 h-5"
@@ -439,7 +516,7 @@
               </h4>
               <button
                 id="pract-close-slide"
-                class="px-2 py-1 rounded-md hover:bg-gray-200/50"
+                class="px-2 py-1 rounded-md hover:bg-gray-200/50 dark:hover:bg-slate-600"
                 data-translate="close"
               >
                 Close
@@ -947,7 +1024,7 @@
       function toast(msg, ttl = 3000) {
         const t = document.createElement("div");
         t.className =
-          "px-6 py-3 bg-primary text-white rounded-full shadow-lg mb-2";
+          "px-6 py-3 bg-primary dark:bg-d-primary text-white rounded-full shadow-lg mb-2";
         t.textContent = msg;
         $("#toast").appendChild(t);
         gsap.from(t, { opacity: 0, y: 20, duration: 0.4, ease: "power2.out" });
@@ -1116,6 +1193,8 @@
           });
         });
 
+        setupTheme();
+
         gsap.from("#screen-login", {
           y: 20,
           opacity: 0,
@@ -1124,6 +1203,38 @@
         });
         renderTherapies();
         changeLanguage(state.currentLanguage); // Set initial language
+      }
+
+      function setupTheme() {
+        const themeToggleBtn = $("#theme-toggle");
+        const themeToggleDarkIcon = $("#theme-toggle-dark-icon");
+        const themeToggleLightIcon = $("#theme-toggle-light-icon");
+
+        const setTheme = (theme) => {
+          if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+            themeToggleLightIcon.classList.remove("hidden");
+            themeToggleDarkIcon.classList.add("hidden");
+          } else {
+            document.documentElement.classList.remove("dark");
+            themeToggleDarkIcon.classList.remove("hidden");
+            themeToggleLightIcon.classList.add("hidden");
+          }
+          if (
+            state.currentUser?.type === "patient" &&
+            $("#wellnessChart")?.offsetParent !== null
+          ) {
+            renderWellnessChart(state.currentUser.id);
+          }
+        };
+
+        themeToggleBtn.addEventListener("click", () => {
+          const isDark = document.documentElement.classList.contains("dark");
+          setTheme(isDark ? "light" : "dark");
+        });
+
+        // Initialize theme
+        setTheme("light"); // Default to light
       }
 
       function loginAs(type, id) {
@@ -1210,7 +1321,7 @@
         $("#patient-conditions").innerHTML = p.conditions
           .map(
             (c) =>
-              `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-accent/20 text-text-primary">${c}</span>`
+              `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-accent/20 dark:bg-d-accent/20 dark:text-d-text-primary">${c}</span>`
           )
           .join(" ");
         const next = p.appointments
@@ -1229,7 +1340,7 @@
           !patient.currentTherapies ||
           patient.currentTherapies.length === 0
         ) {
-          container.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 text-center text-sm text-text-secondary">${t(
+          container.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 dark:border-slate-600 text-center text-sm text-text-secondary">${t(
             "noActiveTherapies"
           )}</div>`;
           return;
@@ -1249,8 +1360,8 @@
                       therapy.daysCompleted
                     } of ${therapy.totalDays}</span>
                 </div>
-                <div class="w-full bg-gray-200/70 rounded-full h-2.5">
-                    <div class="bg-primary h-2.5 rounded-full" style="width: ${progressPercentage}%"></div>
+                <div class="w-full bg-gray-200/70 dark:bg-slate-700 rounded-full h-2.5">
+                    <div class="bg-primary dark:bg-d-primary h-2.5 rounded-full" style="width: ${progressPercentage}%"></div>
                 </div>
                 <div class="text-xs text-text-secondary mt-1">with ${
                   therapy.practitioner
@@ -1280,15 +1391,15 @@
               );
               const modeTag =
                 appt.mode === "Online"
-                  ? `<span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800 font-semibold">Online</span>`
-                  : `<span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800 font-semibold">Physical</span>`;
-              return `<div class="p-4 rounded-xl border border-gray-200/50 flex items-center justify-between mb-2 bg-white/30"><div><div class="font-semibold text-text-primary">${
+                  ? `<span class="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900/70 text-blue-800 dark:text-blue-200 font-semibold">Online</span>`
+                  : `<span class="text-xs px-2 py-1 rounded-full bg-green-100 dark:bg-green-900/70 text-green-800 dark:text-green-200 font-semibold">Physical</span>`;
+              return `<div class="p-4 rounded-xl border border-gray-200/50 dark:border-slate-700 flex items-center justify-between mb-2 bg-white/30 dark:bg-slate-800/30"><div><div class="font-semibold text-text-primary">${
                 appt.therapy
               }</div><div class="text-sm text-text-secondary">${formatDate(
                 appt.datetime
               )} • ${
                 doc ? doc.name : ""
-              }</div></div><div class="flex items-center gap-3">${modeTag}<button class="view-session-details px-3 py-1 rounded-md bg-secondary/20 hover:bg-secondary/30 text-sm font-semibold" data-appid="${
+              }</div></div><div class="flex items-center gap-3">${modeTag}<button class="view-session-details px-3 py-1 rounded-md bg-secondary/20 hover:bg-secondary/30 dark:bg-orange-400/20 dark:hover:bg-orange-400/30 text-sm font-semibold" data-appid="${
                 appt.id
               }">${t("details")}</button></div></div>`;
             })
@@ -1303,7 +1414,7 @@
           });
         } else {
           $("#upcoming-session-meta").textContent = t("noUpcomingSessions");
-          el.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 text-center text-sm text-text-secondary">${t(
+          el.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 dark:border-slate-700 text-center text-sm text-text-secondary">${t(
             "noSessionsMessage"
           )}</div>`;
         }
@@ -1315,12 +1426,12 @@
         let locationInfo =
           appt.mode === "Physical"
             ? `<p class="mt-2 text-sm"><strong>Location:</strong> ${doc.location}</p>`
-            : `<p class="mt-2 text-sm"><strong>Meeting Link:</strong> <a href="#" class="text-blue-600">https://meet.ayursutra.com/session/${appt.id}</a></p>`;
+            : `<p class="mt-2 text-sm"><strong>Meeting Link:</strong> <a href="#" class="text-blue-600 dark:text-blue-400">https://meet.ayursutra.com/session/${appt.id}</a></p>`;
         const modalContent = `<h4 class="font-semibold text-lg">${
           appt.therapy
         } with ${doc.name}</h4><p class="text-sm text-text-secondary">${
           doc.specialty
-        }</p><div class="mt-4 p-4 bg-background rounded-lg border border-gray-200/50"><p class="text-sm"><strong>Date & Time:</strong> ${formatDate(
+        }</p><div class="mt-4 p-4 bg-background dark:bg-d-background rounded-lg border border-gray-200/50 dark:border-slate-600"><p class="text-sm"><strong>Date & Time:</strong> ${formatDate(
           appt.datetime
         )}</p><p class="text-sm"><strong>Mode:</strong> ${
           appt.mode
@@ -1330,6 +1441,18 @@
       function renderWellnessChart(pid) {
         const p = state.patients.find((x) => x.id === pid);
         if (!p) return;
+
+        const isDark = document.documentElement.classList.contains("dark");
+        const gridColor = isDark
+          ? "rgba(255, 255, 255, 0.1)"
+          : "rgba(0, 0, 0, 0.1)";
+        const ticksColor = isDark ? "#a0aec0" : "#576c7a";
+        const pointColor = isDark ? "#1a202c" : "#FFF";
+        const borderColor = isDark ? "#319795" : "#368D8B";
+        const bgColor = isDark
+          ? "rgba(49, 151, 149, 0.2)"
+          : "rgba(54, 141, 139, 0.1)";
+
         const labels = [
           "5 Wks Ago",
           "4 Wks Ago",
@@ -1351,11 +1474,11 @@
                 data,
                 tension: 0.4,
                 fill: true,
-                backgroundColor: "rgba(54, 141, 139, 0.1)",
+                backgroundColor: bgColor,
                 borderWidth: 3,
-                borderColor: "#368D8B",
-                pointBackgroundColor: "#FFF",
-                pointBorderColor: "#368D8B",
+                borderColor: borderColor,
+                pointBackgroundColor: pointColor,
+                pointBorderColor: borderColor,
                 pointHoverRadius: 7,
                 pointHoverBorderWidth: 2,
               },
@@ -1363,7 +1486,17 @@
           },
           options: {
             responsive: true,
-            scales: { y: { beginAtZero: false } },
+            scales: {
+              y: {
+                beginAtZero: false,
+                grid: { color: gridColor },
+                ticks: { color: ticksColor },
+              },
+              x: {
+                grid: { color: gridColor },
+                ticks: { color: ticksColor },
+              },
+            },
             plugins: { legend: { display: false } },
           },
         });
@@ -1392,7 +1525,8 @@
               const isPositive = change && change.startsWith("+");
               const isNegative = change && change.startsWith("-");
 
-              let changeColor = "text-text-secondary";
+              let changeColor =
+                "text-text-secondary dark:text-d-text-secondary";
               if (metric.label === "Weight") {
                 if (isNegative) changeColor = "text-green-500";
                 if (isPositive) changeColor = "text-red-500";
@@ -1404,13 +1538,17 @@
               const changeSymbol = isPositive ? "↑" : isNegative ? "↓" : "";
 
               return `
-                <div class="bg-background/50 p-3 rounded-xl">
+                <div class="bg-background/50 dark:bg-slate-800/50 p-3 rounded-xl">
                     <div class="flex items-center gap-2">
                       <span class="text-lg">${metric.icon}</span>
-                      <span class="text-sm font-semibold text-text-primary">${metric.label}</span>
+                      <span class="text-sm font-semibold text-text-primary">${
+                        metric.label
+                      }</span>
                     </div>
                     <div class="flex items-baseline gap-2 mt-1">
-                        <p class="text-2xl font-bold text-text-primary">${metric.data.value}</p>
+                        <p class="text-2xl font-bold text-text-primary">${
+                          metric.data.value
+                        }</p>
                         ${
                           change
                             ? `<p class="text-sm font-semibold ${changeColor}">${changeSymbol} ${change.substring(
@@ -1432,29 +1570,33 @@
             title: "Vamana",
             desc: "Emesis therapy for Kapha issues.",
             icon: "🌿",
-            color: "bg-primary/10",
-            gradient: "bg-gradient-to-br from-primary/5 to-transparent",
+            color: "bg-primary/10 dark:bg-d-primary/10",
+            gradient:
+              "bg-gradient-to-br from-primary/5 to-transparent dark:from-d-primary/5",
           },
           {
             title: "Virechana",
             desc: "Purgation for Pitta imbalances.",
             icon: "🪔",
-            color: "bg-secondary/10",
-            gradient: "bg-gradient-to-br from-secondary/5 to-transparent",
+            color: "bg-secondary/10 dark:bg-d-secondary/10",
+            gradient:
+              "bg-gradient-to-br from-secondary/5 to-transparent dark:from-d-secondary/5",
           },
           {
             title: "Basti",
             desc: "Enema therapy for Vata disorders.",
             icon: "💧",
-            color: "bg-accent/10",
-            gradient: "bg-gradient-to-br from-accent/5 to-transparent",
+            color: "bg-accent/10 dark:bg-d-accent/10",
+            gradient:
+              "bg-gradient-to-br from-accent/5 to-transparent dark:from-d-accent/5",
           },
           {
             title: "Nasya",
             desc: "Nasal therapy for head/neck.",
             icon: "🌸",
-            color: "bg-tertiary/10",
-            gradient: "bg-gradient-to-br from-tertiary/5 to-transparent",
+            color: "bg-tertiary/10 dark:bg-slate-600/10",
+            gradient:
+              "bg-gradient-to-br from-tertiary/5 to-transparent dark:from-slate-600/5",
           },
         ];
         const board = $("#therapies-board");
@@ -1462,7 +1604,7 @@
         board.innerHTML = "";
         list.forEach((t) => {
           const card = document.createElement("div");
-          card.className = `p-4 rounded-2xl border border-gray-200/50 cursor-pointer hover:shadow-lg transition-shadow flex flex-col items-center text-center therapy-card ${t.gradient}`;
+          card.className = `p-4 rounded-2xl border border-gray-200/50 dark:border-slate-700 cursor-pointer hover:shadow-lg transition-shadow flex flex-col items-center text-center therapy-card ${t.gradient}`;
           card.innerHTML = `<div class="text-3xl ${t.color} p-3 rounded-full">${t.icon}</div><div class="font-semibold mt-3 text-text-primary">${t.title}</div><div class="text-xs text-text-secondary mt-1">${t.desc}</div>`;
           card.addEventListener("click", () => openTherapyModal(t));
           board.appendChild(card);
@@ -1473,7 +1615,7 @@
         const modal = document.createElement("div");
         modal.className =
           "fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 p-4";
-        modal.innerHTML = `<div class="bg-background rounded-3xl max-w-lg w-full p-8 relative"><button id="closeTherapyModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">✕</button><div class="text-5xl ${
+        modal.innerHTML = `<div class="bg-background dark:bg-d-surface rounded-3xl max-w-lg w-full p-8 relative"><button id="closeTherapyModal" class="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white">✕</button><div class="text-5xl ${
           t.color
         } p-4 rounded-full inline-block mb-4">${
           t.icon
@@ -1551,7 +1693,7 @@
         const modal = document.createElement("div");
         modal.className =
           "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
-        modal.innerHTML = `<div class="bg-background rounded-3xl p-8 relative w-full max-w-lg">
+        modal.innerHTML = `<div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-lg">
                 <h4 class="font-bold text-2xl" data-translate="clinicsNearYou">${t(
                   "clinicsNearYou"
                 )}</h4>
@@ -1560,7 +1702,7 @@
                       "enterPincode"
                     )}</p>
                     <div class="flex gap-2">
-                        <input id="pincode-input" type="number" class="w-full p-3 rounded-lg border-gray-200/50 bg-background/50 focus-ring" placeholder="e.g., 751024" />
+                        <input id="pincode-input" type="number" class="w-full p-3 rounded-lg border-gray-200/50 dark:border-slate-600 bg-background/50 dark:bg-slate-800/50 focus-ring" placeholder="e.g., 751024" />
                         <button id="pincode-search-btn" class="px-6 py-2 rounded-lg btn btn-primary font-semibold" data-translate="search">${t(
                           "search"
                         )}</button>
@@ -1569,7 +1711,7 @@
                 <div id="clinic-results-container" class="mt-6 max-h-[40vh] overflow-auto space-y-3">
                 </div>
                 <div class="mt-6 flex justify-end gap-2">
-                    <button id="modal-cancel" class="px-4 py-2 rounded-lg">${t(
+                    <button id="modal-cancel" class="px-4 py-2 rounded-lg hover:bg-gray-200/50 dark:hover:bg-slate-700">${t(
                       "close"
                     )}</button>
                 </div>
@@ -1605,7 +1747,7 @@
         if (!container) return;
 
         if (clinics.length === 0) {
-          container.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 text-center text-sm text-text-secondary">${t(
+          container.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 dark:border-slate-700 text-center text-sm text-text-secondary">${t(
             "noClinicsFound"
           )}</div>`;
           return;
@@ -1614,15 +1756,21 @@
         container.innerHTML = clinics
           .map(
             (c) => `
-            <div class="p-4 rounded-xl border border-gray-200/80 bg-white/50">
+            <div class="p-4 rounded-xl border border-gray-200/80 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50">
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="font-semibold text-text-primary">${c.name}</p>
-                        <p class="text-xs text-text-secondary">${c.address}, ${c.pincode}</p>
+                        <p class="text-xs text-text-secondary">${
+                          c.address
+                        }, ${c.pincode}</p>
                     </div>
                     <div class="text-right flex-shrink-0 pl-4">
-                        <p class="font-bold text-primary">${c.distance}</p>
-                        <p class="text-xs font-semibold text-text-secondary">★ ${c.rating}</p>
+                        <p class="font-bold text-primary dark:text-d-primary">${
+                          c.distance
+                        }</p>
+                        <p class="text-xs font-semibold text-text-secondary">★ ${
+                          c.rating
+                        }</p>
                     </div>
                 </div>
             </div>
@@ -1638,7 +1786,7 @@
         const modal = document.createElement("div");
         modal.className =
           "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
-        modal.innerHTML = `<div class="bg-background rounded-3xl p-8 relative w-full max-w-lg"><h4 class="font-bold text-2xl">${t(
+        modal.innerHTML = `<div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-lg"><h4 class="font-bold text-2xl">${t(
           "scheduleWith"
         ).replace(
           "{name}",
@@ -1650,19 +1798,19 @@
         )}</p><div class="grid grid-cols-2 gap-2" id="slot-list">${doc.slots
           .map(
             (s) =>
-              `<button class="slot-btn px-3 py-2 rounded-lg border border-gray-200/80 text-left hover:border-primary focus-ring" data-dt="${s}">${formatDate(
+              `<button class="slot-btn px-3 py-2 rounded-lg border border-gray-200/80 dark:border-slate-600 text-left hover:border-primary dark:hover:border-d-primary focus-ring" data-dt="${s}">${formatDate(
                 s
               )}</button>`
           )
           .join(
             ""
-          )}</div></div><div id="mode-selection" class="mt-4 pt-4 border-t border-gray-200/80 hidden"><p class="text-sm font-semibold mb-2 text-text-primary">${t(
+          )}</div></div><div id="mode-selection" class="mt-4 pt-4 border-t border-gray-200/80 dark:border-slate-700 hidden"><p class="text-sm font-semibold mb-2 text-text-primary">${t(
           "selectMode"
-        )}</p><div class="flex gap-3"><button id="confirm-physical" class="flex-1 px-3 py-2 rounded-lg bg-green-100 text-green-800 hover:bg-green-200 font-semibold">${t(
+        )}</p><div class="flex gap-3"><button id="confirm-physical" class="flex-1 px-3 py-2 rounded-lg bg-green-100 dark:bg-green-900/70 text-green-800 dark:text-green-200 hover:bg-green-200 font-semibold">${t(
           "confirmPhysical"
-        )}</button><button id="confirm-online" class="flex-1 px-3 py-2 rounded-lg bg-blue-100 text-blue-800 hover:bg-blue-200 font-semibold">${t(
+        )}</button><button id="confirm-online" class="flex-1 px-3 py-2 rounded-lg bg-blue-100 dark:bg-blue-900/70 text-blue-800 dark:text-blue-200 hover:bg-blue-200 font-semibold">${t(
           "confirmOnline"
-        )}</button></div></div><div class="mt-6 flex justify-end gap-2"><button id="modal-cancel" class="px-4 py-2 rounded-lg">${t(
+        )}</button></div></div><div class="mt-6 flex justify-end gap-2"><button id="modal-cancel" class="px-4 py-2 rounded-lg hover:bg-gray-200/50 dark:hover:bg-slate-700">${t(
           "close"
         )}</button></div></div>`;
         document.getElementById("modal-root").appendChild(modal);
@@ -1675,16 +1823,19 @@
         modal.querySelectorAll(".slot-btn").forEach((b) => {
           b.addEventListener("click", () => {
             selectedDateTime = b.dataset.dt;
-            modal
-              .querySelectorAll(".slot-btn")
-              .forEach((btn) =>
-                btn.classList.remove(
-                  "bg-primary",
-                  "text-white",
-                  "border-primary"
-                )
+            modal.querySelectorAll(".slot-btn").forEach((btn) => {
+              btn.classList.remove(
+                "bg-primary",
+                "text-white",
+                "border-primary"
               );
+              btn.classList.remove(
+                "dark:bg-d-primary",
+                "dark:border-d-primary"
+              );
+            });
             b.classList.add("bg-primary", "text-white", "border-primary");
+            b.classList.add("dark:bg-d-primary", "dark:border-d-primary");
             $("#mode-selection").classList.remove("hidden");
           });
         });
@@ -1713,16 +1864,16 @@
         modal.className =
           "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
         modal.innerHTML = `
-            <div class="bg-background rounded-3xl p-8 relative w-full max-w-sm text-center">
+            <div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-sm text-center">
                 <h4 class="font-bold text-2xl">Confirm Booking</h4>
                 <p class="text-sm text-text-secondary mt-2">
                     You are booking a ${mode} consultation with ${
           doc.name
         } on ${formatDate(datetime)}.
                 </p>
-                <div class="my-6 p-4 bg-primary/10 rounded-xl">
+                <div class="my-6 p-4 bg-primary/10 dark:bg-d-primary/10 rounded-xl">
                     <p class="text-sm text-text-secondary">Total Amount</p>
-                    <p class="text-4xl font-bold text-primary">₹${price}</p>
+                    <p class="text-4xl font-bold text-primary dark:text-d-primary">₹${price}</p>
                 </div>
                 <p class="text-xs text-text-secondary mb-6">
                     This is a mock payment step. No real transaction will occur.
@@ -1731,7 +1882,7 @@
                     <button id="confirm-pay-btn" class="w-full py-3 rounded-full btn btn-primary font-semibold text-lg">
                         Confirm & Pay
                     </button>
-                    <button id="payment-cancel-btn" class="w-full py-2 rounded-full font-semibold text-text-secondary hover:bg-gray-200/50">
+                    <button id="payment-cancel-btn" class="w-full py-2 rounded-full font-semibold text-text-secondary hover:bg-gray-200/50 dark:hover:bg-slate-700">
                         Cancel
                     </button>
                 </div>
@@ -1795,11 +1946,11 @@
         const modal = document.createElement("div");
         modal.className =
           "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
-        modal.innerHTML = `<div class="bg-background rounded-3xl p-8 relative w-full max-w-2xl max-h-[80vh] overflow-auto"><h4 class="font-bold text-2xl">${t(
+        modal.innerHTML = `<div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-2xl max-h-[80vh] overflow-auto"><h4 class="font-bold text-2xl">${t(
           "history"
         )} — ${
           p.name
-        }</h4><div id="history-list" class="mt-6 space-y-4"></div><div class="mt-6 flex justify-end gap-2"><button id="history-close" class="px-4 py-2 rounded-lg">${t(
+        }</h4><div id="history-list" class="mt-6 space-y-4"></div><div class="mt-6 flex justify-end gap-2"><button id="history-close" class="px-4 py-2 rounded-lg hover:bg-gray-200/50 dark:hover:bg-slate-700">${t(
           "close"
         )}</button></div></div>`;
         document.getElementById("modal-root").appendChild(modal);
@@ -1813,14 +1964,15 @@
             .sort((a, b) => new Date(b.date) - new Date(a.date))
             .forEach((h, idx) => {
               const row = document.createElement("div");
-              row.className = "p-4 rounded-xl border border-gray-200/80";
+              row.className =
+                "p-4 rounded-xl border border-gray-200/80 dark:border-slate-700";
               row.innerHTML = `<div class="flex items-start justify-between"><div><div class="font-semibold text-text-primary">${
                 h.therapy
               }</div><div class="text-xs text-text-secondary">${new Date(
                 h.date
               ).toLocaleDateString("en-IN", { dateStyle: "long" })} • ${
                 h.practitioner
-              }</div></div><button class="download-pres text-sm px-3 py-1 rounded-md bg-secondary/20 font-semibold" data-idx="${idx}">Prescription</button></div><p class="text-sm text-text-secondary mt-2">${
+              }</div></div><button class="download-pres text-sm px-3 py-1 rounded-md bg-secondary/20 dark:bg-orange-400/20 font-semibold" data-idx="${idx}">Prescription</button></div><p class="text-sm text-text-secondary mt-2">${
                 h.prescription
               }</p>`;
               listEl.appendChild(row);
@@ -1882,7 +2034,7 @@
         filtered.forEach((p) => {
           const el = document.createElement("div");
           el.className =
-            "p-3 rounded-xl border border-gray-200/50 flex items-center justify-between cursor-pointer hover:bg-white/50";
+            "p-3 rounded-xl border border-gray-200/50 dark:border-slate-700 flex items-center justify-between cursor-pointer hover:bg-white/50 dark:hover:bg-slate-800/50";
           el.innerHTML = `<div><div class="font-semibold text-sm text-text-primary">${
             p.name
           }</div><div class="text-xs text-text-secondary">${p.id} • ${
@@ -1921,8 +2073,10 @@
         todays.forEach((a) => {
           const p = state.patients.find((x) => x.id === a.patientId);
           const el = document.createElement("div");
-          el.className = `p-4 rounded-xl border border-gray-200/50 flex items-center justify-between ${
-            a.status === "Completed" ? "bg-gray-50/50 opacity-60" : ""
+          el.className = `p-4 rounded-xl border border-gray-200/50 dark:border-slate-700 flex items-center justify-between ${
+            a.status === "Completed"
+              ? "bg-gray-50/50 dark:bg-slate-800/50 opacity-60"
+              : ""
           }`;
           el.innerHTML = `<div><div class="font-semibold text-text-primary">${new Date(
             a.datetime
@@ -1930,7 +2084,7 @@
             p ? p.name : a.patientId
           }</div><div class="text-sm text-text-secondary">${a.therapy} • ${
             a.status
-          }</div></div><div><button class="ap-view px-3 py-1 rounded-md bg-secondary/20 font-semibold" data-id="${
+          }</div></div><div><button class="ap-view px-3 py-1 rounded-md bg-secondary/20 dark:bg-orange-400/20 font-semibold" data-id="${
             a.id
           }">${t("details")}</button></div>`;
           list.appendChild(el);
@@ -1965,7 +2119,7 @@
           .sort((a, b) => new Date(b.date) - new Date(a.date))
           .map(
             (h) =>
-              `<div class="p-3 rounded-lg border border-gray-200/80 text-sm"><div><strong class="text-text-primary">${
+              `<div class="p-3 rounded-lg border border-gray-200/80 dark:border-slate-700 text-sm"><div><strong class="text-text-primary">${
                 h.therapy
               }</strong> on ${new Date(
                 h.date
@@ -1975,9 +2129,9 @@
           )
           .join("")}</div></div>`;
         if (appt) {
-          body.innerHTML += `<div class="mt-4 pt-4 border-t border-gray-200/80"><strong class="text-text-primary">${t(
+          body.innerHTML += `<div class="mt-4 pt-4 border-t border-gray-200/80 dark:border-slate-700"><strong class="text-text-primary">${t(
             "selectedAppointment"
-          )}</strong><div class="p-3 rounded-lg border-l-4 border-primary mt-2 text-sm bg-primary/5"><div>${
+          )}</strong><div class="p-3 rounded-lg border-l-4 border-primary dark:border-d-primary mt-2 text-sm bg-primary/5 dark:bg-d-primary/5"><div>${
             appt.therapy
           } - ${
             appt.status
@@ -1986,7 +2140,7 @@
           )}</div></div></div>`;
           body.innerHTML += `<div class="mt-4 flex gap-2"><button id="mark-completed" class="px-4 py-2 rounded-lg btn btn-primary text-sm font-semibold">${t(
             "markCompleted"
-          )}</button><button id="add-note" class="px-4 py-2 rounded-lg bg-white border text-sm font-semibold">${t(
+          )}</button><button id="add-note" class="px-4 py-2 rounded-lg bg-white dark:bg-slate-700 border dark:border-slate-600 text-sm font-semibold">${t(
             "addNote"
           )}</button></div>`;
         }
@@ -2029,7 +2183,7 @@
         const modal = document.createElement("div");
         modal.className =
           "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
-        modal.innerHTML = `<div class="bg-background rounded-3xl p-8 relative w-full max-w-md"><h4 class="font-bold text-2xl mb-4">${title}</h4><div class="text-sm text-text-secondary">${content}</div><div class="mt-6 flex justify-end gap-2"><button id="modal-close" class="px-5 py-2 rounded-lg btn btn-primary font-semibold">${t(
+        modal.innerHTML = `<div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-md"><h4 class="font-bold text-2xl mb-4">${title}</h4><div class="text-sm text-text-secondary">${content}</div><div class="mt-6 flex justify-end gap-2"><button id="modal-close" class="px-5 py-2 rounded-lg btn btn-primary font-semibold">${t(
           "close"
         )}</button></div></div>`;
         document.getElementById("modal-root").appendChild(modal);
