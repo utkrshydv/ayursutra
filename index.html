@@ -171,6 +171,13 @@
             </h2>
           </div>
           <div class="flex items-center gap-4">
+            <button
+              id="btn-find-clinics"
+              class="btn btn-secondary px-5 py-2 rounded-full focus-ring font-semibold hidden"
+              data-translate="findClinics"
+            >
+              Clinics Around Me
+            </button>
             <div
               id="user-badge"
               class="px-4 py-2 rounded-full bg-white/70 shadow-sm text-sm font-semibold"
@@ -284,13 +291,6 @@
                     data-translate="findSpecialist"
                   >
                     Find a Specialist
-                  </button>
-                  <button
-                    id="btn-find-clinics"
-                    class="px-6 py-2 rounded-full btn btn-secondary font-semibold"
-                    data-translate="findClinics"
-                  >
-                    Clinics Around Me
                   </button>
                   <div
                     id="llm-loading"
@@ -1105,6 +1105,10 @@
         if (practClose)
           practClose.addEventListener("click", () => hidePractSlide());
 
+        const btnFindClinics = $("#btn-find-clinics");
+        if (btnFindClinics)
+          btnFindClinics.addEventListener("click", openClinicsModal);
+
         document.querySelectorAll(".lang-btn").forEach((btn) => {
           btn.addEventListener("click", (e) => {
             const lang = e.currentTarget.dataset.lang;
@@ -1166,6 +1170,8 @@
             if (dp) dp.classList.add("hidden");
             const dr = $("#dashboard-practitioner");
             if (dr) dr.classList.add("hidden");
+            if ($("#btn-find-clinics"))
+              $("#btn-find-clinics").classList.add("hidden");
             state.currentUser = null;
           },
         });
@@ -1183,7 +1189,8 @@
         renderWellnessChart(patientId);
         renderWellnessMetrics(patientId);
         renderDoctorResults([]);
-        $("#btn-find-clinics")?.addEventListener("click", openClinicsModal);
+        if ($("#btn-find-clinics"))
+          $("#btn-find-clinics").classList.remove("hidden");
         applyTranslations();
         gsap.from("#dashboard-patient .card", {
           y: 20,
@@ -1851,6 +1858,8 @@
         $("#app-title").textContent = t("practitionerDashboardTitle");
         $("#dashboard-patient").classList.add("hidden");
         $("#dashboard-practitioner").classList.remove("hidden");
+        if ($("#btn-find-clinics"))
+          $("#btn-find-clinics").classList.add("hidden");
         renderPractPatientList();
         renderCalendar(practId);
         applyTranslations();
