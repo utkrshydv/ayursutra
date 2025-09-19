@@ -1394,23 +1394,75 @@
             $("#mode-selection").classList.remove("hidden");
           });
         });
+
         modal
           .querySelector("#confirm-physical")
           .addEventListener("click", () => {
-            if (selectedDateTime)
-              confirmSchedule(
-                p.id,
-                doctorId,
-                selectedDateTime,
-                "Physical",
-                modal
-              );
+            if (selectedDateTime) {
+              modal.remove();
+              openPaymentModal(p.id, doctorId, selectedDateTime, "Physical");
+            }
           });
         modal.querySelector("#confirm-online").addEventListener("click", () => {
-          if (selectedDateTime)
-            confirmSchedule(p.id, doctorId, selectedDateTime, "Online", modal);
+          if (selectedDateTime) {
+            modal.remove();
+            openPaymentModal(p.id, doctorId, selectedDateTime, "Online");
+          }
         });
       }
+
+      function openPaymentModal(pid, did, datetime, mode) {
+        const doc = state.practitioners.find((d) => d.id === did);
+        if (!doc) return;
+        const price = mode === "Physical" ? 800 : 500;
+        const modal = document.createElement("div");
+        modal.className =
+          "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
+        modal.innerHTML = `
+            <div class="bg-background rounded-3xl p-8 relative w-full max-w-sm text-center">
+                <h4 class="font-bold text-2xl">Confirm Booking</h4>
+                <p class="text-sm text-text-secondary mt-2">
+                    You are booking a ${mode} consultation with ${
+          doc.name
+        } on ${formatDate(datetime)}.
+                </p>
+                <div class="my-6 p-4 bg-primary/10 rounded-xl">
+                    <p class="text-sm text-text-secondary">Total Amount</p>
+                    <p class="text-4xl font-bold text-primary">₹${price}</p>
+                </div>
+                <p class="text-xs text-text-secondary mb-6">
+                    This is a mock payment step. No real transaction will occur.
+                </p>
+                <div class="flex flex-col gap-3">
+                    <button id="confirm-pay-btn" class="w-full py-3 rounded-full btn btn-primary font-semibold text-lg">
+                        Confirm & Pay
+                    </button>
+                    <button id="payment-cancel-btn" class="w-full py-2 rounded-full font-semibold text-text-secondary hover:bg-gray-200/50">
+                        Cancel
+                    </button>
+                </div>
+            </div>`;
+        document.getElementById("modal-root").appendChild(modal);
+
+        const inner = modal.querySelector("div.relative");
+        gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
+
+        modal.querySelector("#confirm-pay-btn").addEventListener("click", () => {
+          confirmSchedule(pid, did, datetime, mode, modal);
+        });
+
+        modal
+          .querySelector("#payment-cancel-btn")
+          .addEventListener("click", () => {
+            gsap.to(inner, {
+              y: 20,
+              opacity: 0,
+              duration: 0.2,
+              onComplete: () => modal.remove(),
+            });
+          });
+      }
+
       function confirmSchedule(pid, did, datetime, mode, modalEl) {
         const newId = "A-" + (100 + state.appointments.length + 1);
         const appt = {
@@ -1425,11 +1477,24 @@
         state.appointments.push(appt);
         const p = state.patients.find((x) => x.id === pid);
         if (p) p.appointments.push(appt);
-        if (modalEl && modalEl.remove) modalEl.remove();
+        if (modalEl && modalEl.remove) {
+          const inner = modalEl.querySelector("div.relative");
+          if (inner) {
+            gsap.to(inner, {
+              y: 20,
+              opacity: 0,
+              duration: 0.2,
+              onComplete: () => modalEl.remove(),
+            });
+          } else {
+            modalEl.remove();
+          }
+        }
         renderUpcomingSession(pid);
         populatePatientInfo(pid);
         toast(t("appointmentScheduled"));
       }
+
       function openHistoryModal(pid) {
         const p = state.patients.find((x) => x.id === pid);
         if (!p) return;
