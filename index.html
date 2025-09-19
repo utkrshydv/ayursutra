@@ -509,6 +509,13 @@
               </div>
               <div id="calendar-list" class="space-y-3"></div>
             </div>
+             <!-- New Feedback Section -->
+            <div class="lg:col-span-4 card p-6 rounded-3xl">
+                <h3 class="text-xl font-bold mb-4 tracking-tight" data-translate="recentFeedback">Recent Feedback</h3>
+                <div id="pract-feedback-list" class="space-y-4 max-h-[40vh] overflow-auto">
+                    <!-- JS will render feedback here -->
+                </div>
+            </div>
           </div>
 
           <div
@@ -547,6 +554,48 @@
       const state = {
         currentUser: null,
         currentLanguage: "en",
+        feedback: [
+           {
+            patientId: "P-001",
+            practitionerName: "Dr. Suresh Patel",
+            therapy: "Abhyanga",
+            date: "2025-06-10",
+            rating: 5,
+            comment: "Dr. Patel is very knowledgeable. The Abhyanga therapy was very rejuvenating. I felt a significant reduction in my Vata imbalance symptoms."
+           },
+           {
+            patientId: "P-003",
+            practitionerName: "Dr. Priya Nair",
+            therapy: "Virechana",
+            date: "2025-04-22",
+            rating: 4,
+            comment: "The Virechana treatment helped with my skin allergies. Dr. Nair provided a very detailed diet plan which was very helpful. The process itself was a bit challenging but worth it."
+           },
+           {
+            patientId: "P-005",
+            practitionerName: "Dr. Meera Gupta",
+            therapy: "Nasya",
+            date: "2025-07-18",
+            rating: 5,
+            comment: "My migraines have significantly reduced after the Nasya therapy. Dr. Gupta was very gentle and caring throughout the session. Highly recommended."
+           },
+           {
+            patientId: "P-002",
+            practitionerName: "Dr. Amit Desai",
+            therapy: "Kati Basti",
+            date: "2025-08-20",
+            rating: 5,
+            comment: "The Kati Basti therapy was incredibly effective for my back pain. Dr. Desai was very professional and explained the process clearly. Feeling much better now."
+           },
+           {
+            patientId: "P-004",
+            practitionerName: "Dr. Meera Gupta",
+            therapy: "Shirodhara",
+            date: "2025-08-10",
+            rating: 4,
+            comment: "Very relaxing session. It helped with my stress levels, but the effects didn't last as long as I had hoped. The clinic environment was very peaceful."
+           }
+        ],
         patients: [
           {
             id: "P-001",
@@ -872,6 +921,15 @@
           appointmentScheduled: "Appointment scheduled successfully!",
           noHistory: "No past therapies recorded.",
           downloadStarted: "Prescription download started.",
+          giveFeedback: "Give Feedback",
+          feedbackSent: "Feedback Sent",
+          submitFeedback: "Submit Feedback",
+          giveFeedbackFor: "Give Feedback for",
+          yourRating: "Your Rating",
+          yourComments: "Your Comments",
+          feedbackPlaceholder: "Share details of your experience...",
+          feedbackSubmitted: "Thank you for your feedback!",
+
           // Practitioner Dashboard
           practitionerDashboardTitle: "Practitioner Dashboard",
           patients: "Patients",
@@ -883,6 +941,7 @@
           markCompleted: "Mark Completed",
           addNote: "Add Note",
           markedCompleted: "Marked completed",
+          recentFeedback: "Recent Feedback",
         },
         hi: {
           // Login
@@ -935,6 +994,14 @@
           appointmentScheduled: "नियुक्ति सफलतापूर्वक निर्धारित हो गई!",
           noHistory: "कोई पिछला उपचार दर्ज नहीं किया गया।",
           downloadStarted: "प्रिस्क्रिप्शन डाउनलोड शुरू हो गया।",
+          giveFeedback: "प्रतिक्रिया दें",
+          feedbackSent: "प्रतिक्रिया भेजी गई",
+          submitFeedback: "प्रतिक्रिया सबमिट करें",
+          giveFeedbackFor: "के लिए प्रतिक्रिया दें",
+          yourRating: "आपकी रेटिंग",
+          yourComments: "आपकी टिप्पणियाँ",
+          feedbackPlaceholder: "अपने अनुभव का विवरण साझा करें...",
+          feedbackSubmitted: "आपकी प्रतिक्रिया के लिए धन्यवाद!",
           // Practitioner Dashboard
           practitionerDashboardTitle: "चिकित्सक डैशबोर्ड",
           patients: "मरीजों",
@@ -946,6 +1013,7 @@
           markCompleted: "पूर्ण के रूप में चिह्नित करें",
           addNote: "नोट जोड़ें",
           markedCompleted: "पूर्ण के रूप में चिह्नित किया गया",
+          recentFeedback: "हाल की प्रतिक्रिया",
         },
         bn: {
           // Login
@@ -998,6 +1066,14 @@
           appointmentScheduled: "অ্যাপয়েন্টমেন্ট সফলভাবে নির্ধারিত হয়েছে!",
           noHistory: "কোনো পূর্ববর্তী থেরাপির রেকর্ড নেই।",
           downloadStarted: "প্রেসক্রিপশন ডাউনলোড শুরু হয়েছে।",
+          giveFeedback: "মতামত দিন",
+          feedbackSent: "মতামত পাঠানো হয়েছে",
+          submitFeedback: "মতামত জমা দিন",
+          giveFeedbackFor: "-এর জন্য মতামত দিন",
+          yourRating: "আপনার রেটিং",
+          yourComments: "আপনার মন্তব্য",
+          feedbackPlaceholder: "আপনার অভিজ্ঞতার বিবরণ শেয়ার করুন...",
+          feedbackSubmitted: "আপনার মতামতের জন্য ধন্যবাদ!",
           // Practitioner Dashboard
           practitionerDashboardTitle: "চিকিৎসক ড্যাশবোর্ড",
           patients: "রোগী",
@@ -1009,6 +1085,7 @@
           markCompleted: "সম্পন্ন হিসাবে চিহ্নিত করুন",
           addNote: "নোট যোগ করুন",
           markedCompleted: "সম্পন্ন হিসাবে চিহ্নিত করা হয়েছে",
+          recentFeedback: "সাম্প্রতিক মতামত",
         },
       };
 
@@ -1968,19 +2045,28 @@
             "noHistory"
           )}</div>`;
         else {
-          p.history
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .forEach((h, idx) => {
+           const sortedHistory = p.history.sort((a, b) => new Date(b.date) - new Date(a.date));
+           sortedHistory.forEach((h, idx) => {
               const row = document.createElement("div");
               row.className =
                 "p-4 rounded-xl border border-gray-200/80 dark:border-slate-700";
+              const feedbackExists = state.feedback.some(f =>
+                f.patientId === p.id &&
+                f.practitionerName === h.practitioner &&
+                f.date === h.date
+              );
               row.innerHTML = `<div class="flex items-start justify-between"><div><div class="font-semibold text-text-primary">${
                 h.therapy
               }</div><div class="text-xs text-text-secondary">${new Date(
                 h.date
               ).toLocaleDateString("en-IN", { dateStyle: "long" })} • ${
                 h.practitioner
-              }</div></div><button class="download-pres text-sm px-3 py-1 rounded-md bg-secondary/20 dark:bg-orange-400/20 font-semibold" data-idx="${idx}">Prescription</button></div><p class="text-sm text-text-secondary mt-2">${
+              }</div></div>
+              <div class="flex items-center gap-2">
+                <button class="download-pres text-sm px-3 py-1 rounded-md bg-secondary/20 dark:bg-orange-400/20 font-semibold" data-idx="${idx}">Prescription</button>
+                <button class="feedback-btn text-sm px-3 py-1 rounded-md ${feedbackExists ? 'bg-gray-200/50 text-gray-500 cursor-not-allowed' : 'bg-primary/20 dark:bg-d-primary/20 font-semibold'}" data-idx="${idx}" ${feedbackExists ? 'disabled' : ''}>${feedbackExists ? t('feedbackSent') : t('giveFeedback')}</button>
+              </div>
+              </div><p class="text-sm text-text-secondary mt-2">${
                 h.prescription
               }</p>`;
               listEl.appendChild(row);
@@ -1992,16 +2078,111 @@
         modal.querySelectorAll(".download-pres").forEach((b) =>
           b.addEventListener("click", (e) => {
             const idx = e.target.dataset.idx;
-            const h = p.history[idx];
+            const h = p.history.sort((a, b) => new Date(b.date) - new Date(a.date))[idx];
             downloadPrescription(
               h.prescription,
               `${p.id}_${h.therapy}_prescription.txt`
             );
           })
         );
+        modal.querySelectorAll(".feedback-btn:not([disabled])").forEach(b => {
+             b.addEventListener("click", (e) => {
+                const idx = e.target.dataset.idx;
+                const historyItem = p.history.sort((a, b) => new Date(b.date) - new Date(a.date))[idx];
+                modal.remove(); // Close the history modal
+                openFeedbackModal(p.id, historyItem);
+            })
+        });
+
         const inner = modal.querySelector("div.relative");
         gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
       }
+
+    function openFeedbackModal(patientId, historyItem) {
+        const modal = document.createElement("div");
+        modal.className = "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
+        modal.innerHTML = `
+            <div class="bg-background dark:bg-d-surface rounded-3xl p-8 relative w-full max-w-lg">
+                <h4 class="font-bold text-2xl" data-translate="giveFeedbackFor">${t("giveFeedbackFor")}</h4>
+                <div class="mt-2 p-3 bg-background/50 dark:bg-slate-800/50 rounded-lg border border-gray-200/50 dark:border-slate-700">
+                    <p class="font-semibold">${historyItem.therapy}</p>
+                    <p class="text-sm text-text-secondary">with ${historyItem.practitioner} on ${new Date(historyItem.date).toLocaleDateString("en-IN", { dateStyle: "long" })}</p>
+                </div>
+
+                <div class="mt-6">
+                    <p class="text-sm font-semibold mb-2 text-text-primary" data-translate="yourRating">${t("yourRating")}</p>
+                    <div id="feedback-rating" class="flex items-center gap-2 text-3xl cursor-pointer">
+                        <span data-value="1" class="star text-gray-300 dark:text-gray-600">★</span>
+                        <span data-value="2" class="star text-gray-300 dark:text-gray-600">★</span>
+                        <span data-value="3" class="star text-gray-300 dark:text-gray-600">★</span>
+                        <span data-value="4" class="star text-gray-300 dark:text-gray-600">★</span>
+                        <span data-value="5" class="star text-gray-300 dark:text-gray-600">★</span>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <p class="text-sm font-semibold mb-2 text-text-primary" data-translate="yourComments">${t("yourComments")}</p>
+                    <textarea id="feedback-comment" rows="4" class="w-full p-3 rounded-lg border-gray-200/50 dark:border-slate-600 bg-background/50 dark:bg-slate-800/50 focus-ring" placeholder="${t('feedbackPlaceholder')}"></textarea>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-2">
+                    <button id="feedback-cancel" class="px-5 py-2 rounded-lg hover:bg-gray-200/50 dark:hover:bg-slate-700 font-semibold">${t("close")}</button>
+                    <button id="feedback-submit" class="px-5 py-2 rounded-lg btn btn-primary font-semibold" data-translate="submitFeedback">${t("submitFeedback")}</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('modal-root').appendChild(modal);
+
+        const inner = modal.querySelector("div.relative");
+        gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
+
+        let currentRating = 0;
+        const stars = modal.querySelectorAll('.star');
+
+        const setRating = (rating) => {
+            currentRating = rating;
+            stars.forEach(star => {
+                if (parseInt(star.dataset.value) <= rating) {
+                    star.classList.add('text-amber-400');
+                    star.classList.remove('text-gray-300', 'dark:text-gray-600');
+                } else {
+                    star.classList.remove('text-amber-400');
+                    star.classList.add('text-gray-300', 'dark:text-gray-600');
+                }
+            });
+        };
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => setRating(parseInt(star.dataset.value)));
+        });
+
+        modal.querySelector('#feedback-cancel').addEventListener('click', () => modal.remove());
+        modal.querySelector('#feedback-submit').addEventListener('click', () => {
+            const comment = modal.querySelector('#feedback-comment').value.trim();
+            if (currentRating === 0) {
+                toast("Please provide a rating.");
+                return;
+            }
+            if (comment === "") {
+                toast("Please provide a comment.");
+                return;
+            }
+
+            const newFeedback = {
+                patientId,
+                practitionerName: historyItem.practitioner,
+                therapy: historyItem.therapy,
+                date: historyItem.date,
+                rating: currentRating,
+                comment,
+            };
+
+            state.feedback.push(newFeedback);
+            modal.remove();
+            toast(t("feedbackSubmitted"));
+        });
+    }
+
       function downloadPrescription(text, filename) {
         const blob = new Blob([text], { type: "text/plain" });
         const url = URL.createObjectURL(blob);
@@ -2022,6 +2203,7 @@
           $("#btn-find-clinics").classList.add("hidden");
         renderPractPatientList();
         renderCalendar(practId);
+        renderRecentFeedback(practId);
         applyTranslations();
         gsap.from("#dashboard-practitioner .card", {
           y: 20,
@@ -2030,6 +2212,43 @@
           stagger: 0.08,
         });
       }
+
+      function renderRecentFeedback(practId) {
+        const practitioner = state.practitioners.find(p => p.id === practId);
+        if (!practitioner) return;
+
+        const listEl = $('#pract-feedback-list');
+        if (!listEl) return;
+        listEl.innerHTML = '';
+
+        const feedbacks = state.feedback
+            .filter(f => f.practitionerName === practitioner.name)
+            .sort((a,b) => new Date(b.date) - new Date(a.date));
+
+        if (feedbacks.length === 0) {
+            listEl.innerHTML = `<div class="text-center text-text-secondary py-6">No feedback received yet.</div>`;
+            return;
+        }
+
+        const feedbackHtml = feedbacks.map(f => {
+            const patient = state.patients.find(p => p.id === f.patientId);
+            const ratingStars = '★'.repeat(f.rating) + '☆'.repeat(5 - f.rating);
+            return `
+                <div class="p-4 rounded-xl border border-gray-200/80 dark:border-slate-700">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="font-semibold text-text-primary">${patient ? patient.name : f.patientId} <span class="text-sm font-normal text-text-secondary">re: ${f.therapy}</span></p>
+                            <p class="text-xs text-text-secondary">${new Date(f.date).toLocaleDateString("en-IN", { dateStyle: "long" })}</p>
+                        </div>
+                        <div class="text-amber-400 font-bold text-lg" title="Rating: ${f.rating}/5">${ratingStars}</div>
+                    </div>
+                    <p class="text-sm text-text-secondary mt-2 italic">"${f.comment}"</p>
+                </div>
+            `;
+        }).join('');
+        listEl.innerHTML = feedbackHtml;
+      }
+
       function renderPractPatientList(filter = "") {
         const list = $("#pract-patient-list");
         if (!list) return;
@@ -2210,3 +2429,4 @@
     </script>
   </body>
 </html>
+
