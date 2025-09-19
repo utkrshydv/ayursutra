@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AyurSutra - Modern Ayurvedic Patient Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#368D8B", // Fresh, modern teal
+              secondary: "#FF7A5C", // Vibrant coral accent
+              accent: "#A0D2DB", // Soft, light teal
+              tertiary: "#F4E9D8", // Warm sand for backgrounds
+              background: "#FCFBF9", // Clean, warm off-white
+              "text-primary": "#2c3e50", // Dark charcoal for readability
+              "text-secondary": "#576c7a", // Softer grey-blue
+            },
+          },
+        },
+      };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+      body {
+        background-color: #f4e9d8;
+        background-image: linear-gradient(170deg, #fcfbf9 0%, #f4e9d8 100%),
+          url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        font-family: "Poppins", ui-sans-serif, system-ui, -apple-system,
+          "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        color: #2c3e50;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02),
+          0 5px 15px rgba(0, 0, 0, 0.06);
+      }
+      .focus-ring:focus {
+        outline: 2px solid #a0d2db;
+        outline-offset: 2px;
+      }
+      .btn {
+        transition: all 0.25s ease;
+      }
+      .btn-primary {
+        background-color: #368d8b;
+        color: white;
+      }
+      .btn-primary:hover {
+        background-color: #2a6f6d;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(54, 141, 139, 0.25);
+      }
+      .btn-secondary {
+        background-color: #ff7a5c;
+        color: white;
+      }
+      .btn-secondary:hover {
+        background-color: #e66a4f;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 122, 92, 0.3);
+      }
+      .therapy-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .therapy-card::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+      }
+      .therapy-card > * {
+        position: relative;
+        z-index: 1;
+      }
+      .lang-btn {
+        background-color: transparent;
+        color: #576c7a; /* text-secondary */
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+      }
+      .lang-btn.active {
+        background-color: rgba(54, 141, 139, 0.1); /* primary/10 */
+        color: #368d8b; /* primary */
+        font-weight: 600;
+      }
+      .lang-btn:not(.active):hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex items-center justify-center p-4 lg:p-8">
+    <div id="app" class="w-full max-w-7xl">
+      <main
+        id="screen-login"
+        class="mx-auto max-w-md p-8 card rounded-3xl text-center"
+      >
+        <div class="mb-3">
+          <img src="logo.png" alt="AyurSutra Logo" class="w-60 h-50 mx-auto" />
+        </div>
+        <h1 class="text-4xl font-bold text-text-primary mb-2 tracking-tight">
+          Welcome to AyurSutra
+        </h1>
+        <p class="text-text-secondary mb-8">
+          Your journey to holistic wellness starts here.
+        </p>
+        <div class="space-y-4">
+          <button
+            id="btn-patient-login"
+            class="w-full py-3 rounded-full btn btn-primary font-semibold text-lg"
+          >
+            Patient Login
+          </button>
+          <button
+            id="btn-practitioner-login"
+            class="w-full py-3 rounded-full btn btn-secondary font-semibold text-lg"
+          >
+            Practitioner Login
+          </button>
+        </div>
+        <div
+          id="language-picker"
+          class="mt-8 flex justify-center items-center gap-2"
+        >
+          <button
+            data-lang="en"
+            class="lang-btn active px-3 py-1 text-sm rounded-full"
+          >
+            English
+          </button>
+          <button
+            data-lang="hi"
+            class="lang-btn px-3 py-1 text-sm rounded-full"
+          >
+            हिन्दी
+          </button>
+          <button
+            data-lang="bn"
+            class="lang-btn px-3 py-1 text-sm rounded-full"
+          >
+            বাংলা
+          </button>
+        </div>
+      </main>
+
+      <div id="app-shell" class="hidden">
+        <header class="flex items-center justify-between mb-8">
+          <div class="flex items-center gap-4">
+            <h2
+              id="app-title"
+              class="text-3xl font-bold text-text-primary tracking-tight"
+            >
+              Dashboard
+            </h2>
+          </div>
+          <div class="flex items-center gap-4">
+            <div
+              id="user-badge"
+              class="px-4 py-2 rounded-full bg-white/70 shadow-sm text-sm font-semibold"
+            ></div>
+            <button
+              id="btn-logout"
+              class="px-5 py-2 rounded-full bg-white/70 border border-gray-200/50 hover:bg-white focus-ring font-semibold"
+            >
+              Logout
+            </button>
+          </div>
+        </header>
+
+        <section id="dashboard-patient" class="hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <aside class="card p-6 rounded-3xl">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3
+                    class="text-2xl font-bold tracking-tight"
+                    id="patient-name-display"
+                  >
+                    Patient Name
+                  </h3>
+                  <p
+                    class="text-sm text-text-secondary"
+                    id="patient-id-display"
+                  >
+                    ID: P-001
+                  </p>
+                </div>
+                <div class="flex flex-col gap-2 items-end">
+                  <button
+                    id="history-btn"
+                    class="text-sm px-3 py-1 rounded-md bg-secondary/20 hover:bg-secondary/30"
+                  >
+                    History
+                  </button>
+                  <button
+                    id="edit-patient"
+                    class="text-sm px-3 py-1 rounded-md bg-secondary/20 hover:bg-secondary/30"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+              <dl class="mt-6 text-sm text-text-secondary space-y-3">
+                <div class="flex justify-between">
+                  <span
+                    class="font-semibold text-text-primary"
+                    data-translate="age"
+                    >Age</span
+                  >: <span id="patient-age">29</span>
+                </div>
+                <div class="flex justify-between">
+                  <span
+                    class="font-semibold text-text-primary"
+                    data-translate="gender"
+                    >Gender</span
+                  >: <span id="patient-gender">Female</span>
+                </div>
+                <div class="flex justify-between">
+                  <span
+                    class="font-semibold text-text-primary"
+                    data-translate="contact"
+                    >Contact</span
+                  >: <span id="patient-contact">+91 98765 43210</span>
+                </div>
+                <div class="flex justify-between">
+                  <span
+                    class="font-semibold text-text-primary"
+                    data-translate="nextAppointment"
+                    >Next Appointment</span
+                  >: <span id="patient-next" class="font-semibold">—</span>
+                </div>
+                <div>
+                  <span
+                    class="font-semibold text-text-primary"
+                    data-translate="conditions"
+                    >Conditions</span
+                  >:
+                  <div
+                    id="patient-conditions"
+                    class="mt-2 flex flex-wrap gap-2"
+                  ></div>
+                </div>
+              </dl>
+            </aside>
+
+            <div class="lg:col-span-2 space-y-8">
+              <div class="card p-6 rounded-3xl">
+                <h3
+                  class="text-xl font-bold mb-4 tracking-tight"
+                  data-translate="assistantTitle"
+                >
+                  AyurSutra Assistant
+                </h3>
+                <div>
+                  <textarea
+                    id="issue-text"
+                    rows="4"
+                    data-translate-placeholder="issuePlaceholder"
+                    placeholder="e.g., 'I have been experiencing frequent headaches and shoulder stiffness.'"
+                    class="w-full p-3 rounded-lg border-gray-200/50 bg-background/50 focus-ring"
+                  ></textarea>
+                </div>
+                <div class="mt-4 flex items-center gap-4">
+                  <button
+                    id="btn-send-llm"
+                    class="px-6 py-2 rounded-full btn btn-primary font-semibold"
+                    data-translate="findSpecialist"
+                  >
+                    Find a Specialist
+                  </button>
+                  <div
+                    id="llm-loading"
+                    class="hidden text-sm text-text-secondary"
+                    data-translate="searching"
+                  >
+                    Searching…
+                  </div>
+                  <div id="llm-msg" class="text-sm text-text-secondary"></div>
+                </div>
+                <div
+                  id="doctor-results"
+                  class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4"
+                ></div>
+              </div>
+
+              <div class="card p-6 rounded-3xl">
+                <div class="flex items-center justify-between mb-4">
+                  <h3
+                    class="text-xl font-bold tracking-tight"
+                    data-translate="upcomingSessions"
+                  >
+                    Upcoming Sessions
+                  </h3>
+                  <div
+                    class="text-sm text-text-secondary"
+                    id="upcoming-session-meta"
+                  >
+                    No sessions
+                  </div>
+                </div>
+                <div id="upcoming-session" class="space-y-3"></div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card p-6 rounded-3xl">
+                  <h3
+                    class="text-xl font-bold mb-4 tracking-tight"
+                    data-translate="wellnessProgress"
+                  >
+                    Wellness Progress
+                  </h3>
+                  <canvas id="wellnessChart" height="150"></canvas>
+                </div>
+
+                <div class="card p-6 rounded-3xl">
+                  <h3
+                    class="text-xl font-bold mb-4 tracking-tight"
+                    data-translate="therapies"
+                  >
+                    Therapies
+                  </h3>
+                  <div
+                    id="therapies-board"
+                    class="grid grid-cols-2 gap-4"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="dashboard-practitioner" class="hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-1 card p-6 rounded-3xl">
+              <h3
+                class="text-xl font-bold mb-4 tracking-tight"
+                data-translate="patients"
+              >
+                Patients
+              </h3>
+              <div class="flex items-center gap-2 mb-4">
+                <input
+                  id="pract-search"
+                  class="w-full px-3 py-2 border border-gray-200/50 bg-background/50 rounded-lg focus-ring"
+                  data-translate-placeholder="searchPatientsPlaceholder"
+                  placeholder="Search patients..."
+                />
+                <button
+                  id="pract-search-go"
+                  class="p-2 rounded-md bg-secondary/20 hover:bg-secondary/30"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <div
+                id="pract-patient-list"
+                class="space-y-3 max-h-[60vh] overflow-auto"
+              ></div>
+            </div>
+
+            <div class="lg:col-span-3 card p-6 rounded-3xl">
+              <div class="flex items-center justify-between mb-4">
+                <h3
+                  class="text-xl font-bold tracking-tight"
+                  id="calendar-title"
+                >
+                  Today's Appointments
+                </h3>
+                <div class="text-sm text-text-secondary" id="calendar-date">
+                  --
+                </div>
+              </div>
+              <div id="calendar-list" class="space-y-3"></div>
+            </div>
+          </div>
+
+          <div
+            id="pract-slide"
+            class="fixed right-8 top-24 w-[400px] max-w-full h-[85vh] card p-6 rounded-3xl shadow-2xl hidden z-50 overflow-auto"
+          >
+            <div class="flex items-center justify-between mb-4">
+              <h4
+                class="text-xl font-bold tracking-tight"
+                data-translate="patientDetails"
+              >
+                Patient Details
+              </h4>
+              <button
+                id="pract-close-slide"
+                class="px-2 py-1 rounded-md hover:bg-gray-200/50"
+                data-translate="close"
+              >
+                Close
+              </button>
+            </div>
+            <div id="pract-slide-body"></div>
+          </div>
+        </section>
+      </div>
+
+      <div id="modal-root"></div>
+      <div
+        aria-live="polite"
+        id="toast"
+        class="fixed bottom-8 left-8 z-50"
+      ></div>
+    </div>
+
+    <script>
+      const state = {
+        currentUser: null,
+        currentLanguage: "en",
+        patients: [
+          {
+            id: "P-001",
+            name: "Ananya Roy",
+            age: 29,
+            gender: "Female",
+            contact: "+91 98765 43210",
+            conditions: ["Vata imbalance", "Insomnia"],
+            wellness: [65, 68, 70, 72, 74],
+            appointments: [],
+            history: [
+              {
+                date: "2025-08-15",
+                therapy: "Shirodhara",
+                practitioner: "Dr. Meera Gupta",
+                prescription:
+                  "Shirodhara with Brahmi oil for 7 days to calm the nervous system.",
+              },
+              {
+                date: "2025-06-10",
+                therapy: "Abhyanga",
+                practitioner: "Dr. Suresh Patel",
+                prescription:
+                  "Abhyanga prescription: Apply warm sesame oil daily. Take rest. Next follow-up in 2 weeks.",
+              },
+              {
+                date: "2025-07-05",
+                therapy: "Nasya",
+                practitioner: "Dr. Priya Nair",
+                prescription:
+                  "Nasya prescription: Use medicated oil 2 drops each nostril for 7 days.",
+              },
+            ],
+          },
+          {
+            id: "P-002",
+            name: "Rohit Sharma",
+            age: 45,
+            gender: "Male",
+            contact: "+91 91234 56789",
+            conditions: ["Ama", "Chronic Back Pain"],
+            wellness: [50, 52, 55, 60, 58],
+            appointments: [],
+            history: [
+              {
+                date: "2025-08-20",
+                therapy: "Kati Basti",
+                practitioner: "Dr. Amit Desai",
+                prescription:
+                  "Kati Basti with Dhanwantaram oil to relieve back pain. Avoid heavy lifting.",
+              },
+              {
+                date: "2025-05-12",
+                therapy: "Basti",
+                practitioner: "Dr. Amit Desai",
+                prescription:
+                  "Basti prescription: Medicated decoction as advised. Avoid heavy food.",
+              },
+            ],
+          },
+          {
+            id: "P-003",
+            name: "Maya Sen",
+            age: 34,
+            gender: "Female",
+            contact: "+91 99887 77665",
+            conditions: ["Skin Allergy", "Pitta Imbalance"],
+            wellness: [80, 78, 82, 85, 87],
+            appointments: [],
+            history: [
+              {
+                date: "2025-09-01",
+                therapy: "Abhyanga",
+                practitioner: "Dr. Priya Nair",
+                prescription:
+                  "Abhyanga with cooling coconut oil to pacify Pitta and soothe the skin.",
+              },
+              {
+                date: "2025-04-22",
+                therapy: "Virechana",
+                practitioner: "Dr. Priya Nair",
+                prescription:
+                  "Virechana prescription: Detox regimen and follow low-pitta diet.",
+              },
+            ],
+          },
+          {
+            id: "P-004",
+            name: "Vikram Singh",
+            age: 52,
+            gender: "Male",
+            contact: "+91 98765 11122",
+            conditions: ["Hypertension", "Stress"],
+            wellness: [60, 58, 62, 65, 63],
+            appointments: [],
+            history: [
+              {
+                date: "2025-08-10",
+                therapy: "Shirodhara",
+                practitioner: "Dr. Meera Gupta",
+                prescription:
+                  "Continuous Shirodhara sessions recommended to manage stress and blood pressure.",
+              },
+            ],
+          },
+          {
+            id: "P-005",
+            name: "Priya Devi",
+            age: 38,
+            gender: "Female",
+            contact: "+91 99887 22233",
+            conditions: ["Migraine", "Digestive Issues"],
+            wellness: [70, 72, 75, 78, 82],
+            appointments: [],
+            history: [
+              {
+                date: "2025-07-18",
+                therapy: "Nasya",
+                practitioner: "Dr. Meera Gupta",
+                prescription:
+                  "Nasya therapy to alleviate migraine symptoms. Follow a light diet.",
+              },
+            ],
+          },
+        ],
+        practitioners: [
+          {
+            id: "D-01",
+            name: "Dr. Suresh Patel",
+            specialty: "Vamana, Detox",
+            exp: 12,
+            rating: 4.8,
+            slots: ["2025-09-21T09:00", "2025-09-21T11:00", "2025-09-21T15:00"],
+            location: "AyurSutra Clinic, Andheri, Mumbai",
+          },
+          {
+            id: "D-02",
+            name: "Dr. Priya Nair",
+            specialty: "Virechana, Skin disorders",
+            exp: 9,
+            rating: 4.6,
+            slots: ["2025-09-21T10:00", "2025-09-22T11:00"],
+            location: "AyurSutra Clinic, Juhu, Mumbai",
+          },
+          {
+            id: "D-03",
+            name: "Dr. Amit Desai",
+            specialty: "Basti, Musculoskeletal",
+            exp: 15,
+            rating: 4.9,
+            slots: ["2025-09-21T14:00", "2025-09-22T16:00"],
+            location: "AyurSutra Clinic, Bandra, Mumbai",
+          },
+          {
+            id: "D-04",
+            name: "Dr. Meera Gupta",
+            specialty: "Nasya, Stress Management",
+            exp: 10,
+            rating: 4.7,
+            slots: ["2025-09-22T10:00", "2025-09-22T12:00", "2025-09-23T14:00"],
+            location: "AyurSutra Wellness Center, Powai, Mumbai",
+          },
+          {
+            id: "D-05",
+            name: "Dr. Arjun Varma",
+            specialty: "Joint Care, Arthritis",
+            exp: 18,
+            rating: 4.9,
+            slots: ["2025-09-23T09:00", "2025-09-23T11:30"],
+            location: "AyurSutra Clinic, Andheri, Mumbai",
+          },
+          {
+            id: "D-06",
+            name: "Dr. Sunita Kashyap",
+            specialty: "Digestive Health, Acidity",
+            exp: 7,
+            rating: 4.5,
+            slots: ["2025-09-22T15:00", "2025-09-23T16:00"],
+            location: "AyurSutra Wellness Center, Powai, Mumbai",
+          },
+        ],
+        appointments: [
+          {
+            id: "A-100",
+            patientId: "P-005",
+            doctorId: "D-01",
+            datetime: "2025-09-21T15:00",
+            therapy: "Vamana Consult",
+            status: "Scheduled",
+            mode: "Physical",
+          },
+          {
+            id: "A-101",
+            patientId: "P-002",
+            doctorId: "D-03",
+            datetime: "2025-09-19T14:00",
+            therapy: "Kati Basti Follow-up",
+            status: "Scheduled",
+            mode: "Physical",
+          },
+          {
+            id: "A-102",
+            patientId: "P-004",
+            doctorId: "D-04",
+            datetime: "2025-09-22T10:00",
+            therapy: "Stress Management",
+            status: "Scheduled",
+            mode: "Online",
+          },
+          {
+            id: "A-103",
+            patientId: "P-003",
+            doctorId: "D-02",
+            datetime: "2025-09-19T10:00",
+            therapy: "Skin Follow-up",
+            status: "Completed",
+            mode: "Online",
+          },
+        ],
+      };
+
+      const translations = {
+        en: {
+          // Login
+          welcome: "Welcome to AyurSutra",
+          subtitle: "Your journey to holistic wellness starts here.",
+          patientLogin: "Patient Login",
+          practitionerLogin: "Practitioner Login",
+          // General
+          dashboard: "Dashboard",
+          logout: "Logout",
+          history: "History",
+          edit: "Edit",
+          close: "Close",
+          details: "Details",
+          schedule: "Schedule",
+          searching: "Searching…",
+          // Patient Dashboard
+          patientDashboardTitle: "Patient Dashboard",
+          age: "Age",
+          gender: "Gender",
+          contact: "Contact",
+          nextAppointment: "Next Appointment",
+          conditions: "Conditions",
+          assistantTitle: "AyurSutra Assistant",
+          issuePlaceholder:
+            "e.g., 'I have been experiencing frequent headaches and shoulder stiffness.'",
+          findSpecialist: "Find a Specialist",
+          upcomingSessions: "Upcoming Sessions",
+          wellnessProgress: "Wellness Progress",
+          therapies: "Therapies",
+          noUpcomingSessions: "No upcoming sessions",
+          noSessionsMessage: "You have no scheduled sessions.",
+          suggestionsFound: "suggestion(s) found.",
+          describeIssue: "Please describe your issue before sending.",
+          upcomingSessionCount: "{count} upcoming session(s)",
+          appointmentDetails: "Appointment Details",
+          scheduleWith: "Schedule with {name}",
+          selectSlot: "1. Select an available time slot:",
+          selectMode: "2. Select consultation mode:",
+          confirmPhysical: "Confirm Physical",
+          confirmOnline: "Confirm Online",
+          appointmentScheduled: "Appointment scheduled successfully!",
+          noHistory: "No past therapies recorded.",
+          downloadStarted: "Prescription download started.",
+          // Practitioner Dashboard
+          practitionerDashboardTitle: "Practitioner Dashboard",
+          patients: "Patients",
+          searchPatientsPlaceholder: "Search patients...",
+          todaysAppointments: "Today's Appointments",
+          patientDetails: "Patient Details",
+          noAppointments: "No appointments scheduled for this day.",
+          selectedAppointment: "Selected Appointment",
+          markCompleted: "Mark Completed",
+          addNote: "Add Note",
+          markedCompleted: "Marked completed",
+        },
+        hi: {
+          // Login
+          welcome: "आयुसूत्र में आपका स्वागत है",
+          subtitle: "समग्र कल्याण की ओर आपकी यात्रा यहां से शुरू होती है।",
+          patientLogin: "रोगी लॉगिन",
+          practitionerLogin: "चिकित्सक लॉगिन",
+          // General
+          dashboard: "डैशबोर्ड",
+          logout: "लॉग आउट",
+          history: "इतिहास",
+          edit: "संपादित करें",
+          close: "बंद करें",
+          details: "विवरण",
+          schedule: "अनुसूची",
+          searching: "खोज रहा है…",
+          // Patient Dashboard
+          patientDashboardTitle: "रोगी डैशबोर्ड",
+          age: "आयु",
+          gender: "लिंग",
+          contact: "संपर्क",
+          nextAppointment: "अगली नियुक्ति",
+          conditions: "स्थितियाँ",
+          assistantTitle: "आयुसूत्र सहायक",
+          issuePlaceholder:
+            "उदा., 'मुझे बार-बार सिरदर्द और कंधे में अकड़न हो रही है।'",
+          findSpecialist: "एक विशेषज्ञ खोजें",
+          upcomingSessions: "आगामी सत्र",
+          wellnessProgress: "कल्याण प्रगति",
+          therapies: "चिकित्साएं",
+          noUpcomingSessions: "कोई आगामी सत्र नहीं",
+          noSessionsMessage: "आपके पास कोई निर्धारित सत्र नहीं है।",
+          suggestionsFound: "सुझाव मिले।",
+          describeIssue: "कृपया भेजने से पहले अपनी समस्या का वर्णन करें।",
+          upcomingSessionCount: "{count} आगामी सत्र",
+          appointmentDetails: "नियुक्ति विवरण",
+          scheduleWith: "{name} के साथ शेड्यूल करें",
+          selectSlot: "1. एक उपलब्ध समय स्लॉट चुनें:",
+          selectMode: "2. परामर्श मोड चुनें:",
+          confirmPhysical: "भौतिक पुष्टि करें",
+          confirmOnline: "ऑनलाइन पुष्टि करें",
+          appointmentScheduled: "नियुक्ति सफलतापूर्वक निर्धारित हो गई!",
+          noHistory: "कोई पिछला उपचार दर्ज नहीं किया गया।",
+          downloadStarted: "प्रिस्क्रिप्शन डाउनलोड शुरू हो गया।",
+          // Practitioner Dashboard
+          practitionerDashboardTitle: "चिकित्सक डैशबोर्ड",
+          patients: "मरीजों",
+          searchPatientsPlaceholder: "मरीजों को खोजें...",
+          todaysAppointments: "आज की नियुक्तियाँ",
+          patientDetails: "रोगी विवरण",
+          noAppointments: "इस दिन के लिए कोई नियुक्ति निर्धारित नहीं है।",
+          selectedAppointment: "चयनित नियुक्ति",
+          markCompleted: "पूर्ण के रूप में चिह्नित करें",
+          addNote: "नोट जोड़ें",
+          markedCompleted: "पूर्ण के रूप में चिह्नित किया गया",
+        },
+        bn: {
+          // Login
+          welcome: "AyurSutra-এ স্বাগতম",
+          subtitle: "আপনার সামগ্রিক সুস্থতার যাত্রা শুরু হচ্ছে এখান থেকে।",
+          patientLogin: "রোগী লগইন",
+          practitionerLogin: "চিকিৎসক লগইন",
+          // General
+          dashboard: "ড্যাশবোর্ড",
+          logout: "লগআউট",
+          history: "ইতিহাস",
+          edit: "সম্পাদনা",
+          close: "বন্ধ করুন",
+          details: "বিস্তারিত",
+          schedule: "নির্ধারণ করুন",
+          searching: "অনুসন্ধান চলছে…",
+          // Patient Dashboard
+          patientDashboardTitle: "রোগী ড্যাশবোর্ড",
+          age: "বয়স",
+          gender: "লিঙ্গ",
+          contact: "যোগাযোগ",
+          nextAppointment: "পরবর্তী অ্যাপয়েন্টমেন্ট",
+          conditions: "অবস্থা",
+          assistantTitle: "AyurSutra সহকারী",
+          issuePlaceholder:
+            "যেমন, 'আমি ঘন ঘন মাথাব্যথা এবং কাঁধে শক্তভাব অনুভব করছি।'",
+          findSpecialist: "বিশেষজ্ঞ খুঁজুন",
+          upcomingSessions: "আসন্ন সেশন",
+          wellnessProgress: "সুস্থতার অগ্রগতি",
+          therapies: "থেরাপি",
+          noUpcomingSessions: "কোনও আসন্ন সেশন নেই",
+          noSessionsMessage: "আপনার কোনো নির্ধারিত সেশন নেই।",
+          suggestionsFound: "সুপারিশ পাওয়া গেছে।",
+          describeIssue: "প্রেরণের আগে দয়া করে আপনার সমস্যা বর্ণনা করুন।",
+          upcomingSessionCount: "{count}টি আসন্ন সেশন",
+          appointmentDetails: "অ্যাপয়েন্টমেন্টের বিবরণ",
+          scheduleWith: "{name}-এর সাথে অ্যাপয়েন্টমেন্ট করুন",
+          selectSlot: "1. একটি উপলব্ধ সময় স্লট নির্বাচন করুন:",
+          selectMode: "2. পরামর্শ মোড নির্বাচন করুন:",
+          confirmPhysical: "উপস্থিতির জন্য নিশ্চিত করুন",
+          confirmOnline: "অনলাইন নিশ্চিত করুন",
+          appointmentScheduled: "অ্যাপয়েন্টমেন্ট সফলভাবে নির্ধারিত হয়েছে!",
+          noHistory: "কোনো পূর্ববর্তী থেরাপির রেকর্ড নেই।",
+          downloadStarted: "প্রেসক্রিপশন ডাউনলোড শুরু হয়েছে।",
+          // Practitioner Dashboard
+          practitionerDashboardTitle: "চিকিৎসক ড্যাশবোর্ড",
+          patients: "রোগী",
+          searchPatientsPlaceholder: "রোগী খুঁজুন...",
+          todaysAppointments: "আজকের অ্যাপয়েন্টমেন্ট",
+          patientDetails: "রোগীর বিস্তারিত",
+          noAppointments: "এই দিনে কোনো অ্যাপয়েন্টমেন্ট নির্ধারিত নেই।",
+          selectedAppointment: "নির্বাচিত অ্যাপয়েন্টমেন্ট",
+          markCompleted: "সম্পন্ন হিসাবে চিহ্নিত করুন",
+          addNote: "নোট যোগ করুন",
+          markedCompleted: "সম্পন্ন হিসাবে চিহ্নিত করা হয়েছে",
+        },
+      };
+
+      state.appointments.forEach((a) => {
+        const p = state.patients.find((x) => x.id === a.patientId);
+        if (p) p.appointments.push(a);
+      });
+      function $(sel) {
+        return document.querySelector(sel);
+      }
+      function $all(sel) {
+        return Array.from(document.querySelectorAll(sel));
+      }
+      function formatDate(dt) {
+        const d = new Date(dt);
+        return d.toLocaleString("en-IN", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        });
+      }
+      function toast(msg, ttl = 3000) {
+        const t = document.createElement("div");
+        t.className =
+          "px-6 py-3 bg-primary text-white rounded-full shadow-lg mb-2";
+        t.textContent = msg;
+        $("#toast").appendChild(t);
+        gsap.from(t, { opacity: 0, y: 20, duration: 0.4, ease: "power2.out" });
+        setTimeout(() => {
+          gsap.to(t, {
+            opacity: 0,
+            y: 20,
+            duration: 0.4,
+            ease: "power2.in",
+            onComplete: () => t.remove(),
+          });
+        }, ttl);
+      }
+
+      function mockLLMQuery(issue) {
+        return new Promise((res) => {
+          const latency = 600 + Math.random() * 400;
+          setTimeout(() => {
+            const lowercasedIssue = issue.toLowerCase();
+            const keywordMap = {
+              headache: ["Nasya, Stress Management"],
+              migraine: ["Nasya, Stress Management"],
+              stress: ["Nasya, Stress Management"],
+              insomnia: ["Nasya, Stress Management"],
+              skin: ["Virechana, Skin disorders"],
+              allergy: ["Virechana, Skin disorders"],
+              pitta: ["Virechana, Skin disorders"],
+              joint: ["Basti, Musculoskeletal", "Joint Care, Arthritis"],
+              pain: ["Basti, Musculoskeletal", "Joint Care, Arthritis"],
+              back: ["Basti, Musculoskeletal"],
+              arthritis: ["Joint Care, Arthritis"],
+              stomach: ["Digestive Health, Acidity"],
+              digestive: ["Digestive Health, Acidity"],
+              acidity: ["Digestive Health, Acidity"],
+              detox: ["Vamana, Detox"],
+              ama: ["Vamana, Detox"],
+              kapha: ["Vamana, Detox"],
+            };
+            const matchedSpecialties = new Set();
+            for (const keyword in keywordMap) {
+              if (lowercasedIssue.includes(keyword)) {
+                keywordMap[keyword].forEach((spec) =>
+                  matchedSpecialties.add(spec)
+                );
+              }
+            }
+            let matches = [];
+            if (matchedSpecialties.size > 0) {
+              matches = state.practitioners.filter((doc) =>
+                matchedSpecialties.has(doc.specialty)
+              );
+            }
+            if (matches.length === 0) {
+              const issueWords = new Set(
+                lowercasedIssue.split(/\s+/).filter((word) => word.length > 3)
+              );
+              matches = state.practitioners.filter((doc) => {
+                const specialtyWords = new Set(
+                  doc.specialty.toLowerCase().split(/[\s,]+/)
+                );
+                return [...issueWords].some((word) => specialtyWords.has(word));
+              });
+            }
+            if (matches.length === 0) {
+              matches = state.practitioners
+                .slice()
+                .sort((a, b) => b.rating - a.rating);
+            }
+            const out = matches.slice(0, 3).map((d) => ({
+              id: d.id,
+              name: d.name,
+              specialty: d.specialty,
+              exp: d.exp,
+              rating: d.rating,
+              reason: `Suggested for expertise in ${d.specialty}`,
+              slots: d.slots,
+            }));
+            res(out);
+          }, latency);
+        });
+      }
+
+      function t(key) {
+        const lang = state.currentLanguage;
+        if (translations[lang] && translations[lang][key]) {
+          return translations[lang][key];
+        }
+        return translations["en"][key] || key; // Fallback to English
+      }
+
+      function applyTranslations() {
+        document.querySelectorAll("[data-translate]").forEach((el) => {
+          const key = el.dataset.translate;
+          el.textContent = t(key);
+        });
+        document
+          .querySelectorAll("[data-translate-placeholder]")
+          .forEach((el) => {
+            const key = el.dataset.translatePlaceholder;
+            el.placeholder = t(key);
+          });
+
+        // Specific element updates that are not covered by data-attributes
+        if (!$("#app-shell").classList.contains("hidden")) {
+          if (state.currentUser?.type === "patient") {
+            $("#app-title").textContent = t("patientDashboardTitle");
+            renderUpcomingSession(state.currentUser.id);
+          } else if (state.currentUser?.type === "practitioner") {
+            $("#app-title").textContent = t("practitionerDashboardTitle");
+            renderCalendar(state.currentUser.id);
+          }
+        }
+      }
+
+      function changeLanguage(lang) {
+        state.currentLanguage = lang;
+
+        // Update login screen text
+        $("#screen-login h1").textContent = t("welcome");
+        $("#screen-login p:nth-of-type(1)").textContent = t("subtitle");
+        $("#btn-patient-login").textContent = t("patientLogin");
+        $("#btn-practitioner-login").textContent = t("practitionerLogin");
+
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.lang === lang);
+        });
+
+        // Apply translations to the rest of the app
+        applyTranslations();
+      }
+
+      let wellnessChart = null;
+      function init() {
+        const btnP = $("#btn-patient-login");
+        if (btnP)
+          btnP.addEventListener("click", () => loginAs("patient", "P-001"));
+        const btnPr = $("#btn-practitioner-login");
+        if (btnPr)
+          btnPr.addEventListener("click", () =>
+            loginAs("practitioner", "D-01")
+          );
+        const btnLogout = $("#btn-logout");
+        if (btnLogout) btnLogout.addEventListener("click", () => logout());
+        const sendBtn = $("#btn-send-llm");
+        if (sendBtn) sendBtn.addEventListener("click", () => handleSendLLM());
+        const histBtn = $("#history-btn");
+        if (histBtn)
+          histBtn.addEventListener("click", () =>
+            openHistoryModal(state.currentUser.id)
+          );
+        const practGo = $("#pract-search-go");
+        if (practGo)
+          practGo.addEventListener("click", () => handlePractSearch());
+        const practClose = $("#pract-close-slide");
+        if (practClose)
+          practClose.addEventListener("click", () => hidePractSlide());
+
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            const lang = e.currentTarget.dataset.lang;
+            changeLanguage(lang);
+          });
+        });
+
+        gsap.from("#screen-login", {
+          y: 20,
+          opacity: 0,
+          duration: 0.5,
+          ease: "power2.out",
+        });
+        renderTherapies();
+        changeLanguage(state.currentLanguage); // Set initial language
+      }
+
+      function loginAs(type, id) {
+        state.currentUser = { type, id };
+        gsap.to("#screen-login", {
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => {
+            const s = $("#screen-login");
+            if (s) s.classList.add("hidden");
+            const shell = $("#app-shell");
+            if (shell) {
+              shell.removeAttribute("style");
+              shell.classList.remove("hidden");
+            }
+            gsap.from("#app-shell", { opacity: 0, duration: 0.4 });
+            const badge = $("#user-badge");
+            if (badge)
+              badge.textContent =
+                type === "patient"
+                  ? `Patient: ${id}`
+                  : `Practitioner: ${
+                      state.practitioners.find((p) => p.id === id).name
+                    }`;
+            if (type === "patient") showPatientDashboard(id);
+            else showPractitionerDashboard(id);
+          },
+        });
+      }
+      function logout() {
+        gsap.to("#app-shell", {
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => {
+            const shell = $("#app-shell");
+            if (shell) shell.classList.add("hidden");
+            const login = $("#screen-login");
+            if (login) {
+              login.removeAttribute("style");
+              login.classList.remove("hidden");
+            }
+            gsap.from("#screen-login", { y: 20, opacity: 0, duration: 0.4 });
+            const dp = $("#dashboard-patient");
+            if (dp) dp.classList.add("hidden");
+            const dr = $("#dashboard-practitioner");
+            if (dr) dr.classList.add("hidden");
+            state.currentUser = null;
+          },
+        });
+      }
+      function showPatientDashboard(patientId) {
+        const title = $("#app-title");
+        if (title) title.textContent = t("patientDashboardTitle");
+        const dp = $("#dashboard-practitioner");
+        if (dp) dp.classList.add("hidden");
+        const dpat = $("#dashboard-patient");
+        if (dpat) dpat.classList.remove("hidden");
+        populatePatientInfo(patientId);
+        renderUpcomingSession(patientId);
+        renderWellnessChart(patientId);
+        renderDoctorResults([]);
+        applyTranslations();
+        gsap.from("#dashboard-patient .card", {
+          y: 20,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.08,
+        });
+      }
+      function populatePatientInfo(pid) {
+        const p = state.patients.find((x) => x.id === pid);
+        if (!p) return;
+        $("#patient-name-display").textContent = p.name;
+        $("#patient-id-display").textContent = `ID: ${p.id}`;
+        $("#patient-age").textContent = p.age;
+        $("#patient-gender").textContent = p.gender;
+        $("#patient-contact").textContent = p.contact;
+        $("#patient-conditions").innerHTML = p.conditions
+          .map(
+            (c) =>
+              `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-accent/20 text-text-primary">${c}</span>`
+          )
+          .join(" ");
+        const next = p.appointments
+          .filter((a) => new Date(a.datetime) > new Date("2025-09-19T18:00:00"))
+          .sort((a, b) => new Date(a.datetime) - new Date(b.datetime))[0];
+        $("#patient-next").textContent = next ? formatDate(next.datetime) : "—";
+      }
+
+      function renderUpcomingSession(pid) {
+        const p = state.patients.find((x) => x.id === pid);
+        const upcoming = p.appointments
+          .filter((a) => new Date(a.datetime) > new Date("2025-09-19T18:00:00"))
+          .sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+        const el = $("#upcoming-session");
+        if (!el) return;
+        el.innerHTML = "";
+        if (upcoming.length > 0) {
+          $("#upcoming-session-meta").textContent = t(
+            "upcomingSessionCount"
+          ).replace("{count}", upcoming.length);
+          const sessionsHtml = upcoming
+            .map((appt) => {
+              const doc = state.practitioners.find(
+                (d) => d.id === appt.doctorId
+              );
+              const modeTag =
+                appt.mode === "Online"
+                  ? `<span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800 font-semibold">Online</span>`
+                  : `<span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800 font-semibold">Physical</span>`;
+              return `<div class="p-4 rounded-xl border border-gray-200/50 flex items-center justify-between mb-2 bg-white/30"><div><div class="font-semibold text-text-primary">${
+                appt.therapy
+              }</div><div class="text-sm text-text-secondary">${formatDate(
+                appt.datetime
+              )} • ${
+                doc ? doc.name : ""
+              }</div></div><div class="flex items-center gap-3">${modeTag}<button class="view-session-details px-3 py-1 rounded-md bg-secondary/20 hover:bg-secondary/30 text-sm font-semibold" data-appid="${
+                appt.id
+              }">${t("details")}</button></div></div>`;
+            })
+            .join("");
+          el.innerHTML = sessionsHtml;
+          el.querySelectorAll(".view-session-details").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+              const appId = e.currentTarget.dataset.appid;
+              const appt = state.appointments.find((a) => a.id === appId);
+              if (appt) openSessionDetailsModal(appt);
+            });
+          });
+        } else {
+          $("#upcoming-session-meta").textContent = t("noUpcomingSessions");
+          el.innerHTML = `<div class="p-4 rounded-lg border-dashed border-gray-300/80 text-center text-sm text-text-secondary">${t(
+            "noSessionsMessage"
+          )}</div>`;
+        }
+      }
+
+      function openSessionDetailsModal(appt) {
+        const doc = state.practitioners.find((d) => d.id === appt.doctorId);
+        if (!doc) return;
+        let locationInfo =
+          appt.mode === "Physical"
+            ? `<p class="mt-2 text-sm"><strong>Location:</strong> ${doc.location}</p>`
+            : `<p class="mt-2 text-sm"><strong>Meeting Link:</strong> <a href="#" class="text-blue-600">https://meet.ayursutra.com/session/${appt.id}</a></p>`;
+        const modalContent = `<h4 class="font-semibold text-lg">${
+          appt.therapy
+        } with ${doc.name}</h4><p class="text-sm text-text-secondary">${
+          doc.specialty
+        }</p><div class="mt-4 p-4 bg-background rounded-lg border border-gray-200/50"><p class="text-sm"><strong>Date & Time:</strong> ${formatDate(
+          appt.datetime
+        )}</p><p class="text-sm"><strong>Mode:</strong> ${
+          appt.mode
+        }</p>${locationInfo}</div>`;
+        openInfoModal(t("appointmentDetails"), modalContent);
+      }
+      function renderWellnessChart(pid) {
+        const p = state.patients.find((x) => x.id === pid);
+        if (!p) return;
+        const labels = [
+          "5 Wks Ago",
+          "4 Wks Ago",
+          "3 Wks Ago",
+          "Last Wk",
+          "This Wk",
+        ];
+        const data = p.wellness;
+        const ctx = document.getElementById("wellnessChart");
+        if (!ctx) return;
+        if (wellnessChart) wellnessChart.destroy();
+        wellnessChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "Wellness Score",
+                data,
+                tension: 0.4,
+                fill: true,
+                backgroundColor: "rgba(54, 141, 139, 0.1)",
+                borderWidth: 3,
+                borderColor: "#368D8B",
+                pointBackgroundColor: "#FFF",
+                pointBorderColor: "#368D8B",
+                pointHoverRadius: 7,
+                pointHoverBorderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: false } },
+            plugins: { legend: { display: false } },
+          },
+        });
+      }
+      function renderTherapies() {
+        const list = [
+          {
+            title: "Vamana",
+            desc: "Emesis therapy for Kapha issues.",
+            icon: "🌿",
+            color: "bg-primary/10",
+            gradient: "bg-gradient-to-br from-primary/5 to-transparent",
+          },
+          {
+            title: "Virechana",
+            desc: "Purgation for Pitta imbalances.",
+            icon: "🪔",
+            color: "bg-secondary/10",
+            gradient: "bg-gradient-to-br from-secondary/5 to-transparent",
+          },
+          {
+            title: "Basti",
+            desc: "Enema therapy for Vata disorders.",
+            icon: "💧",
+            color: "bg-accent/10",
+            gradient: "bg-gradient-to-br from-accent/5 to-transparent",
+          },
+          {
+            title: "Nasya",
+            desc: "Nasal therapy for head/neck.",
+            icon: "🌸",
+            color: "bg-tertiary/10",
+            gradient: "bg-gradient-to-br from-tertiary/5 to-transparent",
+          },
+        ];
+        const board = $("#therapies-board");
+        if (!board) return;
+        board.innerHTML = "";
+        list.forEach((t) => {
+          const card = document.createElement("div");
+          card.className = `p-4 rounded-2xl border border-gray-200/50 cursor-pointer hover:shadow-lg transition-shadow flex flex-col items-center text-center therapy-card ${t.gradient}`;
+          card.innerHTML = `<div class="text-3xl ${t.color} p-3 rounded-full">${t.icon}</div><div class="font-semibold mt-3 text-text-primary">${t.title}</div><div class="text-xs text-text-secondary mt-1">${t.desc}</div>`;
+          card.addEventListener("click", () => openTherapyModal(t));
+          board.appendChild(card);
+          gsap.from(card, { scale: 0.95, opacity: 0, duration: 0.3, y: 10 });
+        });
+      }
+      function openTherapyModal(t) {
+        const modal = document.createElement("div");
+        modal.className =
+          "fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 p-4";
+        modal.innerHTML = `<div class="bg-background rounded-3xl max-w-lg w-full p-8 relative"><button id="closeTherapyModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">✕</button><div class="text-5xl ${
+          t.color
+        } p-4 rounded-full inline-block mb-4">${
+          t.icon
+        }</div><h2 class="text-3xl font-bold mb-2">${
+          t.title
+        }</h2><p class="text-text-secondary">${t.desc.replace(
+          "Emesis therapy for Kapha issues.",
+          "Therapeutic emesis, a controlled process to eliminate toxins (kapha dosha) from the upper part of the body, primarily the stomach and chest."
+        )}</p></div>`;
+        document.getElementById("modal-root").appendChild(modal);
+        const inner = modal.querySelector("div.bg-background");
+        gsap.fromTo(
+          inner,
+          { scale: 0.9, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" }
+        );
+        const closeBtn = modal.querySelector("#closeTherapyModal");
+        if (closeBtn)
+          closeBtn.addEventListener("click", () => {
+            gsap.to(inner, {
+              scale: 0.9,
+              opacity: 0,
+              duration: 0.2,
+              ease: "power2.in",
+              onComplete: () => modal.remove(),
+            });
+          });
+      }
+      async function handleSendLLM() {
+        const issue = ($("#issue-text").value || "").trim();
+        if (!issue) {
+          toast(t("describeIssue"));
+          return;
+        }
+        const loader = $("#llm-loading");
+        loader.classList.remove("hidden");
+        $("#llm-msg").textContent = "";
+        const results = await mockLLMQuery(issue);
+        loader.classList.add("hidden");
+        $("#llm-msg").textContent = `${results.length} ${t(
+          "suggestionsFound"
+        )}`;
+        renderDoctorResults(results);
+      }
+      function renderDoctorResults(docs) {
+        const container = $("#doctor-results");
+        if (!container) return;
+        container.innerHTML = "";
+        if (!docs || docs.length === 0) return;
+        docs.forEach((d) => {
+          const card = document.createElement("div");
+          card.className = "p-4 rounded-2xl border border-gray-200/50 card";
+          card.innerHTML = `<div><div class="font-bold text-text-primary">${
+            d.name
+          }</div><div class="text-xs text-text-secondary">${
+            d.specialty
+          }</div></div><div class="text-sm text-text-secondary mt-2">${
+            d.reason
+          }</div><div class="mt-4 flex items-center justify-between"><button class="choose-doc px-4 py-1.5 rounded-full btn btn-primary text-sm font-semibold" data-id="${
+            d.id
+          }">${t("schedule")}</button><div class="text-xs font-semibold">★ ${
+            d.rating || "—"
+          } (${d.exp} yrs)</div></div>`;
+          container.appendChild(card);
+          gsap.from(card, { scale: 0.98, opacity: 0, duration: 0.3, y: 10 });
+          card
+            .querySelector(".choose-doc")
+            .addEventListener("click", (e) =>
+              openScheduleModal(e.target.dataset.id)
+            );
+        });
+      }
+      function openScheduleModal(doctorId) {
+        const doc = state.practitioners.find((d) => d.id === doctorId);
+        if (!doc) return;
+        const p = state.patients.find((x) => x.id === state.currentUser.id);
+        const modal = document.createElement("div");
+        modal.className =
+          "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
+        modal.innerHTML = `<div class="bg-background rounded-3xl p-8 relative w-full max-w-lg"><h4 class="font-bold text-2xl">${t(
+          "scheduleWith"
+        ).replace(
+          "{name}",
+          doc.name
+        )}</h4><p class="text-sm text-text-secondary">${
+          doc.specialty
+        }</p><div class="mt-6"><p class="text-sm font-semibold mb-2 text-text-primary">${t(
+          "selectSlot"
+        )}</p><div class="grid grid-cols-2 gap-2" id="slot-list">${doc.slots
+          .map(
+            (s) =>
+              `<button class="slot-btn px-3 py-2 rounded-lg border border-gray-200/80 text-left hover:border-primary focus-ring" data-dt="${s}">${formatDate(
+                s
+              )}</button>`
+          )
+          .join(
+            ""
+          )}</div></div><div id="mode-selection" class="mt-4 pt-4 border-t border-gray-200/80 hidden"><p class="text-sm font-semibold mb-2 text-text-primary">${t(
+          "selectMode"
+        )}</p><div class="flex gap-3"><button id="confirm-physical" class="flex-1 px-3 py-2 rounded-lg bg-green-100 text-green-800 hover:bg-green-200 font-semibold">${t(
+          "confirmPhysical"
+        )}</button><button id="confirm-online" class="flex-1 px-3 py-2 rounded-lg bg-blue-100 text-blue-800 hover:bg-blue-200 font-semibold">${t(
+          "confirmOnline"
+        )}</button></div></div><div class="mt-6 flex justify-end gap-2"><button id="modal-cancel" class="px-4 py-2 rounded-lg">${t(
+          "close"
+        )}</button></div></div>`;
+        document.getElementById("modal-root").appendChild(modal);
+        const inner = modal.querySelector("div.relative");
+        gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
+        modal
+          .querySelector("#modal-cancel")
+          .addEventListener("click", () => modal.remove());
+        let selectedDateTime = null;
+        modal.querySelectorAll(".slot-btn").forEach((b) => {
+          b.addEventListener("click", () => {
+            selectedDateTime = b.dataset.dt;
+            modal
+              .querySelectorAll(".slot-btn")
+              .forEach((btn) =>
+                btn.classList.remove(
+                  "bg-primary",
+                  "text-white",
+                  "border-primary"
+                )
+              );
+            b.classList.add("bg-primary", "text-white", "border-primary");
+            $("#mode-selection").classList.remove("hidden");
+          });
+        });
+        modal
+          .querySelector("#confirm-physical")
+          .addEventListener("click", () => {
+            if (selectedDateTime)
+              confirmSchedule(
+                p.id,
+                doctorId,
+                selectedDateTime,
+                "Physical",
+                modal
+              );
+          });
+        modal.querySelector("#confirm-online").addEventListener("click", () => {
+          if (selectedDateTime)
+            confirmSchedule(p.id, doctorId, selectedDateTime, "Online", modal);
+        });
+      }
+      function confirmSchedule(pid, did, datetime, mode, modalEl) {
+        const newId = "A-" + (100 + state.appointments.length + 1);
+        const appt = {
+          id: newId,
+          patientId: pid,
+          doctorId: did,
+          datetime,
+          therapy: "Consult",
+          status: "Scheduled",
+          mode: mode,
+        };
+        state.appointments.push(appt);
+        const p = state.patients.find((x) => x.id === pid);
+        if (p) p.appointments.push(appt);
+        if (modalEl && modalEl.remove) modalEl.remove();
+        renderUpcomingSession(pid);
+        populatePatientInfo(pid);
+        toast(t("appointmentScheduled"));
+      }
+      function openHistoryModal(pid) {
+        const p = state.patients.find((x) => x.id === pid);
+        if (!p) return;
+        const modal = document.createElement("div");
+        modal.className =
+          "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
+        modal.innerHTML = `<div class="bg-background rounded-3xl p-8 relative w-full max-w-2xl max-h-[80vh] overflow-auto"><h4 class="font-bold text-2xl">${t(
+          "history"
+        )} — ${
+          p.name
+        }</h4><div id="history-list" class="mt-6 space-y-4"></div><div class="mt-6 flex justify-end gap-2"><button id="history-close" class="px-4 py-2 rounded-lg">${t(
+          "close"
+        )}</button></div></div>`;
+        document.getElementById("modal-root").appendChild(modal);
+        const listEl = modal.querySelector("#history-list");
+        if ((p.history || []).length === 0)
+          listEl.innerHTML = `<div class="text-sm text-text-secondary">${t(
+            "noHistory"
+          )}</div>`;
+        else {
+          p.history
+            .sort((a, b) => new Date(b.date) - new Date(a.date))
+            .forEach((h, idx) => {
+              const row = document.createElement("div");
+              row.className = "p-4 rounded-xl border border-gray-200/80";
+              row.innerHTML = `<div class="flex items-start justify-between"><div><div class="font-semibold text-text-primary">${
+                h.therapy
+              }</div><div class="text-xs text-text-secondary">${new Date(
+                h.date
+              ).toLocaleDateString("en-IN", { dateStyle: "long" })} • ${
+                h.practitioner
+              }</div></div><button class="download-pres text-sm px-3 py-1 rounded-md bg-secondary/20 font-semibold" data-idx="${idx}">Prescription</button></div><p class="text-sm text-text-secondary mt-2">${
+                h.prescription
+              }</p>`;
+              listEl.appendChild(row);
+            });
+        }
+        modal
+          .querySelector("#history-close")
+          .addEventListener("click", () => modal.remove());
+        modal.querySelectorAll(".download-pres").forEach((b) =>
+          b.addEventListener("click", (e) => {
+            const idx = e.target.dataset.idx;
+            const h = p.history[idx];
+            downloadPrescription(
+              h.prescription,
+              `${p.id}_${h.therapy}_prescription.txt`
+            );
+          })
+        );
+        const inner = modal.querySelector("div.relative");
+        gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
+      }
+      function downloadPrescription(text, filename) {
+        const blob = new Blob([text], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        toast(t("downloadStarted"));
+      }
+      function showPractitionerDashboard(practId) {
+        $("#app-title").textContent = t("practitionerDashboardTitle");
+        $("#dashboard-patient").classList.add("hidden");
+        $("#dashboard-practitioner").classList.remove("hidden");
+        renderPractPatientList();
+        renderCalendar(practId);
+        applyTranslations();
+        gsap.from("#dashboard-practitioner .card", {
+          y: 20,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.08,
+        });
+      }
+      function renderPractPatientList(filter = "") {
+        const list = $("#pract-patient-list");
+        if (!list) return;
+        list.innerHTML = "";
+        const filtered = state.patients.filter(
+          (p) =>
+            p.name.toLowerCase().includes(filter.toLowerCase()) ||
+            p.id.toLowerCase().includes(filter.toLowerCase())
+        );
+        filtered.forEach((p) => {
+          const el = document.createElement("div");
+          el.className =
+            "p-3 rounded-xl border border-gray-200/50 flex items-center justify-between cursor-pointer hover:bg-white/50";
+          el.innerHTML = `<div><div class="font-semibold text-sm text-text-primary">${
+            p.name
+          }</div><div class="text-xs text-text-secondary">${p.id} • ${
+            p.conditions[0] || ""
+          }</div></div><span class="p-1 text-text-secondary">→</span>`;
+          el.addEventListener("click", () => openPractSlide(p.id));
+          list.appendChild(el);
+        });
+      }
+      function renderCalendar(practId) {
+        const today = new Date("2025-09-21T09:00:00");
+        $("#calendar-title").textContent = t("todaysAppointments");
+        $("#calendar-date").textContent = today.toLocaleDateString("en-IN", {
+          dateStyle: "long",
+        });
+        const list = $("#calendar-list");
+        if (!list) return;
+        list.innerHTML = "";
+        const todays = state.appointments
+          .filter((a) => {
+            const apptDate = new Date(a.datetime);
+            return (
+              a.doctorId === practId &&
+              apptDate.getDate() === today.getDate() &&
+              apptDate.getMonth() === today.getMonth() &&
+              apptDate.getFullYear() === today.getFullYear()
+            );
+          })
+          .sort((a, b) => new Date(a.datetime) - new Date(b.datetime));
+        if (todays.length === 0) {
+          list.innerHTML = `<div class="text-center text-text-secondary py-6">${t(
+            "noAppointments"
+          )}</div>`;
+          return;
+        }
+        todays.forEach((a) => {
+          const p = state.patients.find((x) => x.id === a.patientId);
+          const el = document.createElement("div");
+          el.className = `p-4 rounded-xl border border-gray-200/50 flex items-center justify-between ${
+            a.status === "Completed" ? "bg-gray-50/50 opacity-60" : ""
+          }`;
+          el.innerHTML = `<div><div class="font-semibold text-text-primary">${new Date(
+            a.datetime
+          ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} — ${
+            p ? p.name : a.patientId
+          }</div><div class="text-sm text-text-secondary">${a.therapy} • ${
+            a.status
+          }</div></div><div><button class="ap-view px-3 py-1 rounded-md bg-secondary/20 font-semibold" data-id="${
+            a.id
+          }">${t("details")}</button></div>`;
+          list.appendChild(el);
+        });
+        $all(".ap-view").forEach((b) =>
+          b.addEventListener("click", (e) =>
+            openAppointmentDetail(e.target.dataset.id)
+          )
+        );
+      }
+      function openAppointmentDetail(aid) {
+        const appt = state.appointments.find((a) => a.id === aid);
+        if (!appt) return;
+        openPractSlide(appt.patientId, appt);
+      }
+      function openPractSlide(pid, appt = null) {
+        const p = state.patients.find((x) => x.id === pid);
+        if (!p) return;
+        const body = $("#pract-slide-body");
+        if (!body) return;
+        body.innerHTML = "";
+        body.innerHTML += `<div class="font-bold text-xl text-text-primary">${p.name}</div><div class="text-sm text-text-secondary">${p.id}</div>`;
+        body.innerHTML += `<div class="mt-4 text-sm"><strong class="text-text-primary">${t(
+          "contact"
+        )}:</strong> ${p.contact}</div>`;
+        body.innerHTML += `<div class="mt-2 text-sm"><strong class="text-text-primary">${t(
+          "conditions"
+        )}:</strong> ${p.conditions.join(", ")}</div>`;
+        body.innerHTML += `<div class="mt-4"><strong class="text-text-primary">${t(
+          "history"
+        )}</strong><div class="mt-2 space-y-2 max-h-48 overflow-auto">${p.history
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .map(
+            (h) =>
+              `<div class="p-3 rounded-lg border border-gray-200/80 text-sm"><div><strong class="text-text-primary">${
+                h.therapy
+              }</strong> on ${new Date(
+                h.date
+              ).toLocaleDateString()}</div><div class="text-xs text-text-secondary">with ${
+                h.practitioner
+              }</div></div>`
+          )
+          .join("")}</div></div>`;
+        if (appt) {
+          body.innerHTML += `<div class="mt-4 pt-4 border-t border-gray-200/80"><strong class="text-text-primary">${t(
+            "selectedAppointment"
+          )}</strong><div class="p-3 rounded-lg border-l-4 border-primary mt-2 text-sm bg-primary/5"><div>${
+            appt.therapy
+          } - ${
+            appt.status
+          }</div><div class="text-xs text-text-secondary">${formatDate(
+            appt.datetime
+          )}</div></div></div>`;
+          body.innerHTML += `<div class="mt-4 flex gap-2"><button id="mark-completed" class="px-4 py-2 rounded-lg btn btn-primary text-sm font-semibold">${t(
+            "markCompleted"
+          )}</button><button id="add-note" class="px-4 py-2 rounded-lg bg-white border text-sm font-semibold">${t(
+            "addNote"
+          )}</button></div>`;
+        }
+        const slide = $("#pract-slide");
+        if (slide) {
+          slide.removeAttribute("style");
+          slide.classList.remove("hidden");
+        }
+        gsap.from("#pract-slide", {
+          x: 60,
+          opacity: 0,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+        const mark = $("#mark-completed");
+        if (mark && appt) {
+          mark.addEventListener("click", () => {
+            const a = state.appointments.find((ap) => ap.id === appt.id);
+            if (a) a.status = "Completed";
+            toast(t("markedCompleted"));
+            renderCalendar(state.currentUser.id);
+            openPractSlide(pid, a);
+          });
+        }
+      }
+      function hidePractSlide() {
+        gsap.to("#pract-slide", {
+          x: 60,
+          opacity: 0,
+          duration: 0.3,
+          ease: "power2.in",
+          onComplete: () => $("#pract-slide").classList.add("hidden"),
+        });
+      }
+      function handlePractSearch() {
+        const q = ($("#pract-search").value || "").trim();
+        renderPractPatientList(q);
+      }
+      function openInfoModal(title, content) {
+        const modal = document.createElement("div");
+        modal.className =
+          "fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/60";
+        modal.innerHTML = `<div class="bg-background rounded-3xl p-8 relative w-full max-w-md"><h4 class="font-bold text-2xl mb-4">${title}</h4><div class="text-sm text-text-secondary">${content}</div><div class="mt-6 flex justify-end gap-2"><button id="modal-close" class="px-5 py-2 rounded-lg btn btn-primary font-semibold">${t(
+          "close"
+        )}</button></div></div>`;
+        document.getElementById("modal-root").appendChild(modal);
+        const inner = modal.querySelector(".bg-background");
+        gsap.from(inner, { y: 20, opacity: 0, duration: 0.3 });
+        modal.querySelector("#modal-close").addEventListener("click", () =>
+          gsap.to(inner, {
+            y: 20,
+            opacity: 0,
+            duration: 0.2,
+            onComplete: () => modal.remove(),
+          })
+        );
+      }
+      init();
+    </script>
+  </body>
+</html>
