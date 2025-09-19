@@ -339,6 +339,10 @@
                     Wellness Progress
                   </h3>
                   <canvas id="wellnessChart" height="150"></canvas>
+                  <div
+                    id="wellness-metrics"
+                    class="mt-4 grid grid-cols-2 gap-4"
+                  ></div>
                 </div>
 
                 <div class="card p-6 rounded-3xl">
@@ -460,6 +464,10 @@
             contact: "+91 98765 43210",
             conditions: ["Vata imbalance", "Insomnia"],
             wellness: [65, 68, 70, 72, 74],
+            wellnessMetrics: {
+              weight: { value: "58 kg", change: "-2 kg" },
+              agingIndex: { value: "0.85", change: "+0.02" },
+            },
             appointments: [],
             currentTherapies: [
               {
@@ -1114,6 +1122,7 @@
         renderCurrentTherapies(patientId);
         renderUpcomingSession(patientId);
         renderWellnessChart(patientId);
+        renderWellnessMetrics(patientId);
         renderDoctorResults([]);
         applyTranslations();
         gsap.from("#dashboard-patient .card", {
@@ -1292,6 +1301,64 @@
           },
         });
       }
+
+      function renderWellnessMetrics(pid) {
+        const p = state.patients.find((x) => x.id === pid);
+        const container = $("#wellness-metrics");
+        if (!container) return;
+
+        container.innerHTML = ""; // Clear previous metrics
+
+        if (p && p.wellnessMetrics) {
+          const metrics = [
+            { label: "Weight", data: p.wellnessMetrics.weight, icon: "⚖️" },
+            {
+              label: "Aging Index",
+              data: p.wellnessMetrics.agingIndex,
+              icon: "⏳",
+            },
+          ];
+
+          container.innerHTML = metrics
+            .map((metric) => {
+              const change = metric.data.change;
+              const isPositive = change && change.startsWith("+");
+              const isNegative = change && change.startsWith("-");
+
+              let changeColor = "text-text-secondary";
+              if (metric.label === "Weight") {
+                if (isNegative) changeColor = "text-green-500";
+                if (isPositive) changeColor = "text-red-500";
+              } else if (metric.label === "Aging Index") {
+                if (isPositive) changeColor = "text-red-500";
+                if (isNegative) changeColor = "text-green-500";
+              }
+
+              const changeSymbol = isPositive ? "↑" : isNegative ? "↓" : "";
+
+              return `
+                <div class="bg-background/50 p-3 rounded-xl">
+                    <div class="flex items-center gap-2">
+                      <span class="text-lg">${metric.icon}</span>
+                      <span class="text-sm font-semibold text-text-primary">${metric.label}</span>
+                    </div>
+                    <div class="flex items-baseline gap-2 mt-1">
+                        <p class="text-2xl font-bold text-text-primary">${metric.data.value}</p>
+                        ${
+                          change
+                            ? `<p class="text-sm font-semibold ${changeColor}">${changeSymbol} ${change.substring(
+                                1
+                              )}</p>`
+                            : ""
+                        }
+                    </div>
+                </div>
+                `;
+            })
+            .join("");
+        }
+      }
+
       function renderTherapies() {
         const list = [
           {
