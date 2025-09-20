@@ -7,6 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" type="image/png" sizes="32x32" href="/logo.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/logo.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="/logo.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/logo.png">
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -1853,11 +1857,11 @@
 
         if (p && p.wellnessMetrics) {
           const metrics = [
-            { label: "Weight", data: p.wellnessMetrics.weight, icon: "⚖️" },
+            { label: "Weight", data: p.wellnessMetrics.weight, icon: "" },
             {
               label: "Aging Index",
               data: p.wellnessMetrics.agingIndex,
-              icon: "⏳",
+              icon: "",
             },
           ];
 
