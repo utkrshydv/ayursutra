@@ -1,3 +1,5 @@
+# ⚠️ AI GENERATED SLOP AHEAD
+
 # AyurSutra – Panchakarma Patient Management & Therapy Scheduling
 
 Smart India Hackathon 2025 – Problem Statement ID: **SIH25023**  
